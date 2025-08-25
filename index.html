@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/emotion-wheel-icon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Comprehensive Emotional Assessment System combining Geneva Emotion Wheel, PANAS scales, and Plutchik's evolutionary framework with PDF generation and trend analysis." />
+    <meta name="keywords" content="emotion, assessment, psychology, mental health, wellness, Geneva Emotion Wheel, PANAS, Plutchik" />
+    <meta name="author" content="ShayneIsMagic" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://github.com/ShayneIsMagic/emotion_wheel" />
+    <meta property="og:title" content="Comprehensive Emotional Assessment System" />
+    <meta property="og:description" content="Research-based emotional assessment combining multiple validated psychological instruments with PDF generation and trend analysis." />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://github.com/ShayneIsMagic/emotion_wheel" />
+    <meta property="twitter:title" content="Comprehensive Emotional Assessment System" />
+    <meta property="twitter:description" content="Research-based emotional assessment combining multiple validated psychological instruments with PDF generation and trend analysis." />
+    
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    
+    <title>Comprehensive Emotional Assessment System</title>
+    
+    <style>
+      /* Loading spinner styles */
+      .loading-spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255,255,255,.3);
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spin 1s ease-in-out infinite;
+      }
+      
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      
+      /* Initial loading state */
+      .app-loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        font-family: 'Inter', sans-serif;
+      }
+      
+      .loading-content {
+        text-align: center;
+      }
+      
+      .loading-title {
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+      }
+      
+      .loading-subtitle {
+        font-size: 1.1rem;
+        opacity: 0.8;
+        margin-bottom: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <!-- Loading state while React app initializes -->
+      <div class="app-loading">
+        <div class="loading-content">
+          <div class="loading-title">Emotion Wheel Assessment</div>
+          <div class="loading-subtitle">Loading comprehensive emotional assessment system...</div>
+          <div class="loading-spinner"></div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
