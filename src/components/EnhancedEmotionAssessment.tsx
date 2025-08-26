@@ -113,7 +113,7 @@ const EnhancedEmotionAssessment: React.FC<EnhancedEmotionAssessmentProps> = ({
         {getEmotionsToShow().map((emotionName) => {
           const definition = getEmotionDefinition(emotionName);
           const isExpanded = expandedEmotions.has(emotionName);
-          const currentRating = responses[emotionName] || 0;
+          const currentRating = responses[emotionName];
 
           if (!definition) {return null;}
 

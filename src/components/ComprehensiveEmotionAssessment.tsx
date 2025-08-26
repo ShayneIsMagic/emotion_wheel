@@ -223,8 +223,8 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
     const participant: Participant = {
       id: `participant_${Date.now()}`,
       sessionId: config.id,
-      email: invite.email,
-      name: invite.name,
+      email: '', // Will be filled when participant enters
+      name: '', // Will be filled when participant enters
       startedAt: new Date(),
       status: 'invited',
       lastActivity: new Date(),
@@ -326,13 +326,13 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
         if (selectedTestMode?.type === 'comprehensive') {
           return comprehensiveEmotions.every(emotion => responses[emotion] !== undefined);
         } else {
-          // For quick test, check if at least some emotions have been rated
-          return comprehensiveEmotions.some(emotion => responses[emotion] !== undefined);
+          // For quick test, check if all emotions have been rated
+          return comprehensiveEmotions.every(emotion => responses[emotion] !== undefined);
         }
       case 'panas_positive':
-        return PANAS_ITEMS.positive.some(item => responses[`panas_positive_${item}`] !== undefined);
+        return PANAS_ITEMS.positive.every(item => responses[`panas_positive_${item}`] !== undefined);
       case 'panas_negative':
-        return PANAS_ITEMS.negative.some(item => responses[`panas_negative_${item}`] !== undefined);
+        return PANAS_ITEMS.negative.every(item => responses[`panas_negative_${item}`] !== undefined);
       case 'dimensional':
         return DIMENSIONAL_ITEMS.every(item => responses[item.name] !== undefined);
       case 'context':
