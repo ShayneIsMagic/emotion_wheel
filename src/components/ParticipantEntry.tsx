@@ -1,44 +1,57 @@
 import React, { useState } from 'react';
-import { User, Mail, ArrowRight } from 'lucide-react';
-import { AssessmentSessionConfig } from '../types/assessment';
+import { User, Mail, CheckCircle } from 'lucide-react';
+import { AssessmentSessionConfig, Participant } from '../types/assessment';
 import { toast } from 'react-hot-toast';
 
 interface ParticipantEntryProps {
   sessionConfig: AssessmentSessionConfig;
-  onParticipantEntered: (participant: { name: string; email: string }) => void;
+  onParticipantEntered: (_participant: Participant) => void;
+  onBack: () => void;
 }
 
 const ParticipantEntry: React.FC<ParticipantEntryProps> = ({ sessionConfig, onParticipantEntered }) => {
   const [participantInfo, setParticipantInfo] = useState({
     name: '',
-    email: ''
+    email: '',
   });
   const [agreedToTerms, setAgreedToTerms] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!participantInfo.name.trim()) {
       toast.error('Please enter your name');
       return;
     }
-    
+
     if (sessionConfig.requireEmail && !participantInfo.email.trim()) {
       toast.error('Please enter your email address');
       return;
     }
-    
+
     if (sessionConfig.requireEmail && !isValidEmail(participantInfo.email)) {
       toast.error('Please enter a valid email address');
       return;
     }
-    
+
     if (!agreedToTerms) {
       toast.error('Please agree to the terms and conditions');
       return;
     }
-    
-    onParticipantEntered(participantInfo);
+
+    const participant: Participant = {
+      id: `participant_${Date.now()}`,
+      sessionId: sessionConfig.id,
+      name: participantInfo.name,
+      email: participantInfo.email,
+      status: 'started',
+      lastActivity: new Date(),
+      startedAt: new Date(),
+      completedAt: undefined,
+      assessmentData: undefined,
+    };
+
+    onParticipantEntered(participant);
     toast.success('Welcome! You can now begin your assessment.');
   };
 
@@ -131,7 +144,7 @@ const ParticipantEntry: React.FC<ParticipantEntryProps> = ({ sessionConfig, onPa
             className="w-full flex items-center justify-center space-x-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
           >
             <span>Begin Assessment</span>
-            <ArrowRight className="w-4 h-4" />
+            <CheckCircle className="w-4 h-4" />
           </button>
         </form>
 

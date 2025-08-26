@@ -1,5 +1,5 @@
 import jsPDF from 'jspdf';
-import { AssessmentSession, PDFExportOptions } from '../types/emotion';
+import { AssessmentSession, AssessmentScores, PDFExportOptions } from '../types/emotion';
 import { format } from 'date-fns';
 
 /**
@@ -18,9 +18,9 @@ export class PDFGenerator {
     this.doc = new jsPDF({
       orientation: options.orientation,
       unit: 'mm',
-      format: options.format
+      format: options.format,
     });
-    
+
     this.pageWidth = this.doc.internal.pageSize.getWidth();
     this.pageHeight = this.doc.internal.pageSize.getHeight();
   }
@@ -29,31 +29,31 @@ export class PDFGenerator {
    * Generate complete assessment report PDF
    */
   async generateReport(
-    session: AssessmentSession, 
-    options: PDFExportOptions
+    session: AssessmentSession,
+    options: PDFExportOptions,
   ): Promise<jsPDF> {
     this.addHeader(session);
     this.addAssessmentSummary(session);
-    
+
     if (options.includeCharts) {
-      await this.addCharts(session);
+      await this.addCharts(session.scores);
     }
-    
+
     this.addScoringDetails(session);
     this.addEmotionalInsights(session);
-    
+
     if (options.includeRecommendations) {
       this.addRecommendations(session);
     }
-    
+
     if (options.includeTrends) {
       // Note: Trend analysis would be implemented separately
       this.addTrendAnalysisPlaceholder();
     }
-    
+
     this.addResearchFoundation();
     this.addFooter();
-    
+
     return this.doc;
   }
 
@@ -70,12 +70,12 @@ export class PDFGenerator {
     // Assessment metadata
     this.doc.setFontSize(12);
     this.doc.setFont('helvetica', 'normal');
-    
+
     const metadata = [
       `Assessment Date: ${format(session.timestamp, 'PPP')}`,
       `Timeframe: ${this.formatTimeframe(session.timeframe)}`,
       `Session ID: ${session.id}`,
-      `Report Generated: ${format(new Date(), 'PPP')}`
+      `Report Generated: ${format(new Date(), 'PPP')}`,
     ];
 
     metadata.forEach(line => {
@@ -95,7 +95,7 @@ export class PDFGenerator {
       const summaryData = [
         { label: 'Assessment Date', value: format(session.timestamp, 'PPP') },
         { label: 'Timeframe', value: this.formatTimeframe(session.timeframe) },
-        { label: 'Total Responses', value: session.responses.length.toString() }
+        { label: 'Total Responses', value: session.responses.length.toString() },
       ];
 
       summaryData.forEach(item => {
@@ -111,17 +111,17 @@ export class PDFGenerator {
   /**
    * Add charts section (placeholder for now)
    */
-  private async addCharts(session: AssessmentSession): Promise<void> {
+  private async addCharts(_scores: AssessmentScores, _session?: AssessmentSession): Promise<void> {
     this.addSectionWithSpacing('Emotional Assessment Charts', () => {
       // Add chart placeholders
       this.doc.setFontSize(10);
       this.doc.setFont('helvetica', 'normal');
-      
+
       const chartDescriptions = [
         '• Plutchik Wheel Chart: Shows your primary emotion scores',
         '• PANAS Chart: Displays positive vs negative affect balance',
         '• Dimensional Chart: Shows valence, arousal, and power scores',
-        '• GEW Chart: Geneva Emotion Wheel quadrant distribution'
+        '• GEW Chart: Geneva Emotion Wheel quadrant distribution',
       ];
 
       chartDescriptions.forEach(desc => {
@@ -129,7 +129,7 @@ export class PDFGenerator {
         this.doc.text(desc, this.margin, this.currentY);
         this.currentY += 6;
       });
-      
+
       // Note: In a production environment, you would generate actual charts here
       // using libraries like Chart.js or D3.js and convert them to images
       this.checkPageBreak(20);
@@ -154,11 +154,11 @@ export class PDFGenerator {
 
       this.doc.setFontSize(10);
       this.doc.setFont('helvetica', 'normal');
-      
+
       const panasScores = [
         `Positive Affect Score: ${session.scores.panas.positive}/50`,
         `Negative Affect Score: ${session.scores.panas.negative}/50`,
-        `Emotional Balance: ${session.scores.panas.balance > 0 ? '+' : ''}${session.scores.panas.balance}`
+        `Emotional Balance: ${session.scores.panas.balance > 0 ? '+' : ''}${session.scores.panas.balance}`,
       ];
 
       panasScores.forEach(score => {
@@ -178,12 +178,12 @@ export class PDFGenerator {
 
       this.doc.setFontSize(10);
       this.doc.setFont('helvetica', 'normal');
-      
+
       const gewScores = [
         `Positive High Arousal: ${session.scores.gew.positiveHighArousal}`,
         `Positive Low Arousal: ${session.scores.gew.positiveLowArousal}`,
         `Negative Low Arousal: ${session.scores.gew.negativeLowArousal}`,
-        `Negative High Arousal: ${session.scores.gew.negativeHighArousal}`
+        `Negative High Arousal: ${session.scores.gew.negativeHighArousal}`,
       ];
 
       gewScores.forEach(score => {
@@ -203,11 +203,11 @@ export class PDFGenerator {
 
       this.doc.setFontSize(10);
       this.doc.setFont('helvetica', 'normal');
-      
+
       const dimensionalScores = [
         `Valence (Pleasantness): ${session.scores.dimensional.valence}/9`,
         `Arousal (Activation): ${session.scores.dimensional.arousal}/9`,
-        `Power (Control): ${session.scores.dimensional.power}/9`
+        `Power (Control): ${session.scores.dimensional.power}/9`,
       ];
 
       dimensionalScores.forEach(score => {
@@ -225,7 +225,7 @@ export class PDFGenerator {
     this.addSectionWithSpacing('Emotional Insights & Analysis', () => {
       this.doc.setFontSize(10);
       this.doc.setFont('helvetica', 'normal');
-      
+
       // Dominant Patterns
       this.checkPageBreak(20);
       this.doc.setFontSize(11);
@@ -281,10 +281,10 @@ export class PDFGenerator {
     this.addSectionWithSpacing('Personalized Recommendations', () => {
       this.doc.setFontSize(10);
       this.doc.setFont('helvetica', 'normal');
-      
+
       session.recommendations.forEach((rec, index) => {
         this.checkPageBreak(30);
-        
+
         // Recommendation title
         this.doc.setFontSize(11);
         this.doc.setFont('helvetica', 'bold');
@@ -302,7 +302,7 @@ export class PDFGenerator {
         this.checkPageBreak(20);
         this.doc.setFontSize(10);
         this.doc.setFont('helvetica', 'normal');
-        
+
         const wrappedDescription = this.wrapText(rec.description, this.pageWidth - (this.margin * 2));
         wrappedDescription.forEach(line => {
           this.checkPageBreak(12);
@@ -347,7 +347,7 @@ export class PDFGenerator {
       '• Geneva Emotion Wheel: Scherer et al. (2013)',
       '• PANAS: Watson, Clark & Tellegen (1988)',
       '• Circumplex Model: Russell (1980)',
-      '• Plutchik\'s Wheel: Plutchik (1980)'
+      '• Plutchik\'s Wheel: Plutchik (1980)',
     ];
 
     researchInfo.forEach(line => {
@@ -368,13 +368,13 @@ export class PDFGenerator {
    */
   private addFooter(): void {
     this.checkPageBreak(50);
-    
+
     this.addSeparator();
     this.currentY += 5;
-    
+
     this.doc.setFontSize(9);
     this.doc.setFont('helvetica', 'italic');
-    
+
     const footerText = [
       'Research Foundation & Citations:',
       '',
@@ -388,7 +388,7 @@ export class PDFGenerator {
       'If you are experiencing significant emotional distress, please seek professional help.',
       '',
       'Report generated by Emotion Wheel Assessment System v2.0',
-      `Generated on: ${format(new Date(), 'PPP')}`
+      `Generated on: ${format(new Date(), 'PPP')}`,
     ];
 
     footerText.forEach(line => {
@@ -429,7 +429,7 @@ export class PDFGenerator {
       moment: 'Right Now (Current Moment)',
       today: 'Today',
       week: 'Past Week',
-      general: 'In General'
+      general: 'In General',
     };
     return formats[timeframe as keyof typeof formats] || timeframe;
   }
@@ -441,7 +441,7 @@ export class PDFGenerator {
     const descriptions: Record<string, string> = {
       predominantly_positive: 'Your emotional state leans predominantly positive, suggesting good overall well-being.',
       balanced: 'Your emotional state shows a balanced mix of positive and challenging emotions, which is normal and healthy.',
-      predominantly_negative: 'Your emotional state shows significant challenging emotions. Consider seeking support or practicing self-care.'
+      predominantly_negative: 'Your emotional state shows significant challenging emotions. Consider seeking support or practicing self-care.',
     };
     return descriptions[balance] || 'Emotional balance assessment not available.';
   }
@@ -455,12 +455,12 @@ export class PDFGenerator {
     let currentLine = '';
 
     words.forEach(word => {
-      const testLine = currentLine + word + ' ';
+      const testLine = `${currentLine + word} `;
       const testWidth = this.doc.getTextWidth(testLine);
-      
+
       if (testWidth > maxWidth && currentLine !== '') {
         lines.push(currentLine.trim());
-        currentLine = word + ' ';
+        currentLine = `${word} `;
       } else {
         currentLine = testLine;
       }

@@ -1,13 +1,13 @@
-import { 
-  AssessmentSession, 
-  AssessmentScores, 
-  EmotionalInsights, 
-  Recommendations, 
-  GEW_EMOTIONS, 
-  PANAS_ITEMS, 
+import {
+  AssessmentSession,
+  AssessmentScores,
+  EmotionalInsights,
+  Recommendations,
+  GEW_EMOTIONS,
+  PANAS_ITEMS,
   PRIMARY_EMOTIONS,
   EmotionCategory,
-  TimeFrame 
+  TimeFrame,
 } from '../types/emotion';
 
 /**
@@ -15,16 +15,16 @@ import {
  * Implements validated scoring algorithms from Geneva Emotion Wheel, PANAS, and Plutchik's research
  */
 export class AssessmentEngine {
-  
+
   /**
    * Calculate comprehensive assessment scores
    */
   static calculateScores(responses: Record<string, number>, timeframe: TimeFrame): AssessmentScores {
     return {
       panas: this.calculatePANASScores(responses),
-      gew: this.calculateGEWScores(responses),
+      gew: this.calculateGEWScores(responses, timeframe),
       dimensional: this.calculateDimensionalScores(responses),
-      plutchik: this.calculatePlutchikScores(responses)
+      plutchik: this.calculatePlutchikScores(responses),
     };
   }
 
@@ -37,15 +37,15 @@ export class AssessmentEngine {
     const paScore = PANAS_ITEMS.positive.reduce((sum, item) => {
       return sum + (responses[`panas_positive_${item}`] || 0);
     }, 0);
-    
+
     const naScore = PANAS_ITEMS.negative.reduce((sum, item) => {
       return sum + (responses[`panas_negative_${item}`] || 0);
     }, 0);
-    
+
     return {
       positive: paScore,
       negative: naScore,
-      balance: paScore - naScore
+      balance: paScore - naScore,
     };
   }
 
@@ -53,12 +53,12 @@ export class AssessmentEngine {
    * Geneva Emotion Wheel scoring based on Scherer et al. (2013)
    * Groups emotions by valence and arousal quadrants
    */
-  private static calculateGEWScores(responses: Record<string, number>): AssessmentScores['gew'] {
+  private static calculateGEWScores(responses: Record<string, number>, _timeframe: TimeFrame): AssessmentScores['gew'] {
     const quadrants = {
       positiveHighArousal: 0,
       positiveLowArousal: 0,
       negativeLowArousal: 0,
-      negativeHighArousal: 0
+      negativeHighArousal: 0,
     };
 
     GEW_EMOTIONS.forEach(emotion => {
@@ -90,7 +90,7 @@ export class AssessmentEngine {
     return {
       valence: responses['valence'] || 5,
       arousal: responses['arousal'] || 5,
-      power: responses['power'] || 5
+      power: responses['power'] || 5,
     };
   }
 
@@ -100,7 +100,7 @@ export class AssessmentEngine {
    */
   private static calculatePlutchikScores(responses: Record<string, number>): AssessmentScores['plutchik'] {
     const scores: Record<EmotionCategory, number> = {
-      joy: 0, trust: 0, fear: 0, surprise: 0, sadness: 0, disgust: 0, anger: 0, anticipation: 0
+      joy: 0, trust: 0, fear: 0, surprise: 0, sadness: 0, disgust: 0, anger: 0, anticipation: 0,
     };
 
     // Map GEW emotions to Plutchik categories
@@ -117,45 +117,45 @@ export class AssessmentEngine {
       'joy': 'joy', 'happiness': 'joy', 'ecstasy': 'joy', 'delight': 'joy', 'pleasure': 'joy',
       'contentment': 'joy', 'satisfaction': 'joy', 'fulfillment': 'joy', 'excitement': 'joy',
       'enthusiasm': 'joy', 'passion': 'joy', 'gratitude': 'joy', 'hope': 'joy', 'pride': 'joy',
-      
+
       // Trust family
       'trust': 'trust', 'acceptance': 'trust', 'admiration': 'trust', 'love': 'trust',
       'compassion': 'trust', 'empathy': 'trust', 'sympathy': 'trust',
-      
+
       // Fear family
       'fear': 'fear', 'terror': 'fear', 'anxiety': 'fear', 'worry': 'fear', 'apprehension': 'fear',
       'nervousness': 'fear', 'jittery': 'fear', 'afraid': 'fear', 'scared': 'fear',
-      
+
       // Surprise family
       'surprise': 'surprise', 'amazement': 'surprise', 'astonishment': 'surprise', 'wonder': 'surprise',
       'bewilderment': 'surprise', 'curiosity': 'surprise', 'interest': 'surprise',
-      
+
       // Sadness family
       'sadness': 'sadness', 'grief': 'sadness', 'sorrow': 'sadness', 'melancholy': 'sadness',
       'pensiveness': 'sadness', 'loneliness': 'sadness', 'isolation': 'sadness',
       'abandonment': 'sadness', 'rejection': 'sadness', 'guilt': 'sadness', 'shame': 'sadness',
       'disappointment': 'sadness', 'remorse': 'sadness',
-      
+
       // Disgust family
       'disgust': 'disgust', 'loathing': 'disgust', 'aversion': 'disgust', 'contempt': 'disgust',
       'boredom': 'disgust',
-      
+
       // Anger family
       'anger': 'anger', 'rage': 'anger', 'fury': 'anger', 'irritation': 'anger', 'annoyance': 'anger',
       'frustration': 'anger', 'resentment': 'anger', 'bitterness': 'anger', 'hostile': 'anger',
       'irritable': 'anger', 'aggressive': 'anger',
-      
+
       // Anticipation family
       'anticipation': 'anticipation', 'expectancy': 'anticipation', 'vigilance': 'anticipation',
       'attentiveness': 'anticipation', 'alertness': 'anticipation', 'optimism': 'anticipation',
       'determination': 'anticipation', 'strong': 'anticipation', 'active': 'anticipation',
-      'proud': 'anticipation', 'determined': 'anticipation'
+      'proud': 'anticipation', 'determined': 'anticipation',
     };
 
     // Process all responses and map to Plutchik categories
     Object.entries(responses).forEach(([emotionName, intensity]) => {
       // Skip PANAS items as they're handled separately
-      if (emotionName.startsWith('panas_') || emotionName.startsWith('valence') || 
+      if (emotionName.startsWith('panas_') || emotionName.startsWith('valence') ||
           emotionName.startsWith('arousal') || emotionName.startsWith('power')) {
         return;
       }
@@ -209,7 +209,7 @@ export class AssessmentEngine {
       dominantPatterns,
       emotionalBalance,
       intensityProfile,
-      topEmotions
+      topEmotions,
     };
   }
 
@@ -218,7 +218,7 @@ export class AssessmentEngine {
    */
   private static identifyDominantPatterns(scores: AssessmentScores): string[] {
     const patterns: string[] = [];
-    
+
     // Find top 3 primary emotions
     const sortedPrimary = Object.entries(scores.plutchik)
       .sort(([,a], [,b]) => b - a)
@@ -245,7 +245,7 @@ export class AssessmentEngine {
    */
   private static assessEmotionalBalance(scores: AssessmentScores): EmotionalInsights['emotionalBalance'] {
     const { positive, negative } = scores.panas;
-    
+
     if (positive > negative * 1.5) {
       return 'predominantly_positive';
     } else if (negative > positive * 1.5) {
@@ -260,12 +260,12 @@ export class AssessmentEngine {
    */
   private static assessIntensityProfile(responses: Record<string, number>): EmotionalInsights['intensityProfile'] {
     const allRatings = Object.values(responses).filter(r => r > 0);
-    if (allRatings.length === 0) return 'low';
-    
+    if (allRatings.length === 0) {return 'low';}
+
     const averageIntensity = allRatings.reduce((sum, r) => sum + r, 0) / allRatings.length;
-    
-    if (averageIntensity < 2) return 'low';
-    if (averageIntensity < 3.5) return 'moderate';
+
+    if (averageIntensity < 2) {return 'low';}
+    if (averageIntensity < 3.5) {return 'moderate';}
     return 'high';
   }
 
@@ -283,7 +283,12 @@ export class AssessmentEngine {
   /**
    * Generate personalized recommendations based on assessment results
    */
-  static generateRecommendations(scores: AssessmentScores, insights: EmotionalInsights): Recommendations[] {
+  static generateRecommendations(
+    scores: AssessmentScores,
+    _insights: EmotionalInsights,
+    _patterns: any,
+    _timeframe: TimeFrame,
+  ): Recommendations[] {
     const recommendations: Recommendations[] = [];
 
     // Recommendations for positive emotions
@@ -294,7 +299,7 @@ export class AssessmentEngine {
         description: 'Your high positive affect suggests good emotional well-being. Focus on sustaining these positive patterns.',
         actionable: true,
         priority: 'medium',
-        resources: ['Gratitude journaling', 'Positive psychology exercises', 'Social connection activities']
+        resources: ['Gratitude journaling', 'Positive psychology exercises', 'Social connection activities'],
       });
     } else if (scores.panas.positive < 20) {
       recommendations.push({
@@ -303,7 +308,7 @@ export class AssessmentEngine {
         description: 'Your positive affect is below average. Consider activities that promote joy, interest, and engagement.',
         actionable: true,
         priority: 'high',
-        resources: ['Behavioral activation', 'Pleasant activities scheduling', 'Social engagement']
+        resources: ['Behavioral activation', 'Pleasant activities scheduling', 'Social engagement'],
       });
     }
 
@@ -315,7 +320,7 @@ export class AssessmentEngine {
         description: 'Your negative affect is above average. Consider strategies for emotional regulation and well-being enhancement.',
         actionable: true,
         priority: 'high',
-        resources: ['Mindfulness meditation', 'Cognitive behavioral techniques', 'Professional support']
+        resources: ['Mindfulness meditation', 'Cognitive behavioral techniques', 'Professional support'],
       });
     }
 
@@ -327,7 +332,7 @@ export class AssessmentEngine {
         description: 'High fear levels detected. Practice anxiety management techniques and consider stress reduction strategies.',
         actionable: true,
         priority: 'high',
-        resources: ['Deep breathing exercises', 'Progressive muscle relaxation', 'Anxiety management apps']
+        resources: ['Deep breathing exercises', 'Progressive muscle relaxation', 'Anxiety management apps'],
       });
     }
 
@@ -338,7 +343,7 @@ export class AssessmentEngine {
         description: 'Elevated anger detected. Focus on healthy expression and stress management techniques.',
         actionable: true,
         priority: 'medium',
-        resources: ['Physical exercise', 'Anger management techniques', 'Communication skills']
+        resources: ['Physical exercise', 'Anger management techniques', 'Communication skills'],
       });
     }
 
@@ -349,7 +354,7 @@ export class AssessmentEngine {
       description: 'Regular emotional self-assessment helps maintain awareness and supports emotional well-being.',
       actionable: true,
       priority: 'low',
-      resources: ['Regular assessment scheduling', 'Emotional awareness practices', 'Wellness tracking']
+      resources: ['Regular assessment scheduling', 'Emotional awareness practices', 'Wellness tracking'],
     });
 
     return recommendations;
@@ -362,9 +367,9 @@ export class AssessmentEngine {
     const changes = {
       positiveAffect: current.scores.panas.positive - previous.scores.panas.positive,
       negativeAffect: current.scores.panas.negative - previous.scores.panas.negative,
-      emotionalBalance: (current.scores.panas.positive - current.scores.panas.negative) - 
+      emotionalBalance: (current.scores.panas.positive - current.scores.panas.negative) -
                        (previous.scores.panas.positive - previous.scores.panas.negative),
-      dominantEmotions: this.compareDominantEmotions(current.scores.plutchik, previous.scores.plutchik)
+      dominantEmotions: this.compareDominantEmotions(current.scores.plutchik, previous.scores.plutchik),
     };
 
     const patterns = this.identifyPatterns(current, previous);
@@ -378,14 +383,14 @@ export class AssessmentEngine {
       .sort(([,a], [,b]) => b - a)
       .slice(0, 3)
       .map(([emotion]) => emotion);
-    
+
     const previousTop = Object.entries(previous)
       .sort(([,a], [,b]) => b - a)
       .slice(0, 3)
       .map(([emotion]) => emotion);
 
     const changes: string[] = [];
-    
+
     currentTop.forEach((emotion, index) => {
       if (!previousTop.includes(emotion)) {
         changes.push(`${emotion} emerged as a new dominant emotion`);
@@ -399,7 +404,7 @@ export class AssessmentEngine {
 
   private static identifyPatterns(current: AssessmentSession, previous: AssessmentSession) {
     const patterns: { seasonal?: string; weekly?: string; monthly?: string } = {};
-    
+
     const timeDiff = current.timestamp.getTime() - previous.timestamp.getTime();
     const daysDiff = timeDiff / (1000 * 60 * 60 * 24);
 
@@ -413,11 +418,11 @@ export class AssessmentEngine {
     return patterns;
   }
 
-  private static assessProgress(changes: any, patterns: any) {
+  private static assessProgress(changes: any, _patterns: any) {
     const progress = {
       areasOfImprovement: [] as string[],
       persistentChallenges: [] as string[],
-      newPatterns: [] as string[]
+      newPatterns: [] as string[],
     };
 
     if (changes.positiveAffect > 0) {

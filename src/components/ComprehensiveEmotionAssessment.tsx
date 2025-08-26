@@ -1,42 +1,28 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { 
-  RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
-  ScatterChart, Scatter
-} from 'recharts';
-import { 
-  Download, 
-  Upload, 
-  RefreshCw,
-  User,
-  Users,
-  Brain,
-  Zap
-} from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Upload, RefreshCw, Download, Users, Brain, Zap, User } from 'lucide-react';
+import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ScatterChart, Scatter } from 'recharts';
+import { toast } from 'react-hot-toast';
 import { AssessmentEngine } from '../utils/assessmentEngine';
 import { PDFGenerator } from '../utils/pdfGenerator';
 import { URLGenerator } from '../utils/urlGenerator';
 import { EmailService } from '../utils/emailService';
-import { 
-  AssessmentSession, 
-  TimeFrame, 
+import AssessmentSessionManager from './AssessmentSessionManager';
+import ParticipantEntry from './ParticipantEntry';
+import TestModeSelector from './TestModeSelector';
+import EnhancedEmotionAssessment from './EnhancedEmotionAssessment';
+import {
+  TimeFrame,
+  AssessmentSession,
+  TestMode,
+  getAllEmotions,
+  QUICK_TEST_EMOTIONS,
   LifeContext,
   PDFExportOptions,
   GEW_EMOTIONS,
   PANAS_ITEMS,
   DIMENSIONAL_ITEMS,
-  PRIMARY_EMOTIONS,
-  TestMode,
-  getAllEmotions,
-  QUICK_TEST_EMOTIONS
 } from '../types/emotion';
-import { AssessmentSessionConfig, Participant, AssessmentInvite } from '../types/assessment';
-import AssessmentSessionManager from './AssessmentSessionManager';
-import ParticipantEntry from './ParticipantEntry';
-import TestModeSelector from './TestModeSelector';
-import EnhancedEmotionAssessment from './EnhancedEmotionAssessment';
-import { toast } from 'react-hot-toast';
-import { format } from 'date-fns';
+import { AssessmentSessionConfig, AssessmentInvite, Participant } from '../types/assessment';
 
 const ComprehensiveEmotionAssessment: React.FC = () => {
   const [currentPhase, setCurrentPhase] = useState(0);
@@ -48,20 +34,20 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
     positiveInfluences: '',
     sleepQuality: 'good',
     physicalHealth: 'good',
-    socialSupport: 'moderate'
+    socialSupport: 'moderate',
   });
   const [assessmentHistory, setAssessmentHistory] = useState<AssessmentSession[]>([]);
   const [showResults, setShowResults] = useState(false);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-  const [currentSession, setCurrentSession] = useState<AssessmentSession | null>(null);
-  
+  const [_currentSession, _setCurrentSession] = useState<AssessmentSession | null>(null);
+
   // Multi-user functionality
   const [isSessionManager, setIsSessionManager] = useState(false);
   const [sessionConfig, setSessionConfig] = useState<AssessmentSessionConfig | null>(null);
   const [currentParticipant, setCurrentParticipant] = useState<Participant | null>(null);
   const [showParticipantEntry, setShowParticipantEntry] = useState(false);
-  const [activeInvites, setActiveInvites] = useState<AssessmentInvite[]>([]);
-  const [participants, setParticipants] = useState<Participant[]>([]);
+  const [_activeInvites, _setActiveInvites] = useState<AssessmentInvite[]>([]);
+  const [_participants, _setParticipants] = useState<Participant[]>([]);
 
   // Test mode functionality
   const [selectedTestMode, setSelectedTestMode] = useState<TestMode | null>(null);
@@ -69,54 +55,54 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
   const [comprehensiveEmotions, setComprehensiveEmotions] = useState<string[]>([]);
 
 
-  const resultsRef = useRef<HTMLDivElement>(null);
+  const resultsRef = React.useRef<HTMLDivElement>(null);
 
   // Assessment phases
   const phases = [
     {
       title: 'Assessment Setup & Instructions',
       description: 'Please read the instructions carefully and select your assessment timeframe.',
-      type: 'setup'
+      type: 'setup',
     },
     {
       title: selectedTestMode?.type === 'comprehensive' ? 'Comprehensive Emotion Assessment' : 'Geneva Emotion Wheel (GEW) Assessment',
-      description: selectedTestMode?.type === 'comprehensive' 
+      description: selectedTestMode?.type === 'comprehensive'
         ? 'Rate the intensity of all emotions you have experienced in the selected timeframe.'
         : 'Rate the intensity of each emotion you have experienced in the selected timeframe.',
-      type: 'gew'
+      type: 'gew',
     },
     {
       title: 'PANAS: Positive Affect Scale',
       description: 'Rate how much you feel each of these positive emotions.',
-      type: 'panas_positive'
+      type: 'panas_positive',
     },
     {
       title: 'PANAS: Negative Affect Scale',
       description: 'Rate how much you feel each of these negative emotions.',
-      type: 'panas_negative'
+      type: 'panas_negative',
     },
     {
       title: 'Dimensional Assessment',
       description: 'Rate your overall emotional experience on key dimensions.',
-      type: 'dimensional'
+      type: 'dimensional',
     },
     {
       title: 'Life Context & Circumstances',
       description: 'Provide context about your current life circumstances.',
-      type: 'context'
-    }
+      type: 'context',
+    },
   ];
 
   const timeframeOptions = [
     { value: 'moment', label: 'Right now (current moment)', instruction: 'Indicate to what extent you feel this way right now, that is, at the present moment' },
     { value: 'today', label: 'Today', instruction: 'Indicate to what extent you have felt this way today' },
     { value: 'week', label: 'Past week', instruction: 'Indicate to what extent you have felt this way during the past week' },
-    { value: 'general', label: 'In general', instruction: 'Indicate to what extent you generally feel this way, that is, how you feel on average' }
+    { value: 'general', label: 'In general', instruction: 'Indicate to what extent you generally feel this way, that is, how you feel on average' },
   ];
 
   const scaleLabels = {
     gew: ['0 - Not at all', '1 - A little', '2 - Moderately', '3 - Considerably', '4 - Extremely'],
-    panas: ['1 - Very slightly or not at all', '2 - A little', '3 - Moderately', '4 - Quite a bit', '5 - Extremely']
+    panas: ['1 - Very slightly or not at all', '2 - A little', '3 - Moderately', '4 - Quite a bit', '5 - Extremely'],
   };
 
   // Load assessment history from localStorage
@@ -135,14 +121,14 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
     const key = category ? `${category}_${item}` : item;
     setResponses(prev => ({
       ...prev,
-      [key]: value
+      [key]: value,
     }));
   };
 
-  const handleContextChange = (field: keyof LifeContext, value: string) => {
+  const handleContextChange = (field: keyof typeof lifeContext, value: string) => {
     setLifeContext(prev => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   };
 
@@ -156,7 +142,7 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
 
   const saveAssessment = () => {
     const { scores, insights, recommendations } = calculateResults();
-    
+
     const session: AssessmentSession = {
       id: `session_${Date.now()}`,
       timestamp: new Date(),
@@ -164,41 +150,41 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
       responses: Object.entries(responses).map(([emotion, rating]) => ({
         emotion,
         rating,
-        timestamp: new Date()
+        timestamp: new Date(),
       })),
       context: lifeContext,
       scores,
       insights,
-      recommendations
+      recommendations,
     };
 
     const updatedHistory = [session, ...assessmentHistory];
     setAssessmentHistory(updatedHistory);
     localStorage.setItem('emotionAssessmentHistory', JSON.stringify(updatedHistory));
-    
+
     return session;
   };
 
   const generatePDF = async () => {
-    if (!resultsRef.current) return;
-    
+    if (!resultsRef.current) {return;}
+
     setIsGeneratingPDF(true);
     try {
       const session = saveAssessment();
-      
+
       const pdfOptions: PDFExportOptions = {
         includeCharts: true,
         includeTrends: assessmentHistory.length > 0,
         includeRecommendations: true,
-        format: 'A4',
-        orientation: 'portrait'
+        format: 'A4' as const,
+        orientation: 'portrait' as const,
       };
 
       const pdfGenerator = new PDFGenerator(pdfOptions);
       const pdf = await pdfGenerator.generateReport(session, pdfOptions);
-      
+
       // Save PDF
-      pdf.save(`emotion_assessment_${format(new Date(), 'yyyy-MM-dd_HH-mm')}.pdf`);
+      pdf.save(`emotion_assessment_${new Date().toISOString().slice(0, 10)}.pdf`);
     } catch (error) {
       console.error('Error generating PDF:', error);
       alert('Error generating PDF. Please try again.');
@@ -220,7 +206,7 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
   // Multi-user functionality methods
   const handleSessionCreated = (config: AssessmentSessionConfig) => {
     setSessionConfig(config);
-    setActiveInvites(prev => [...prev, URLGenerator.generateAssessmentInvite(
+    const invite = URLGenerator.generateAssessmentInvite(
       config.id,
       {
         method: 'url',
@@ -230,10 +216,22 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
         requireName: config.requireName,
         autoEmailResults: config.autoEmailResults,
         customMessage: '',
-        customInstructions: config.customInstructions
+        customInstructions: config.customInstructions,
       },
-      config.createdBy
-    )]);
+      config.createdBy,
+    );
+    const participant: Participant = {
+      id: `participant_${Date.now()}`,
+      sessionId: config.id,
+      email: invite.email,
+      name: invite.name,
+      startedAt: new Date(),
+      status: 'invited',
+      lastActivity: new Date(),
+    };
+    setCurrentParticipant(participant);
+    _setParticipants(prev => [...prev, participant]);
+    _setActiveInvites(prev => [...prev, invite]);
     toast.success('Assessment session created successfully!');
   };
 
@@ -245,13 +243,13 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
       name: participantInfo.name,
       startedAt: new Date(),
       status: 'started',
-      lastActivity: new Date()
+      lastActivity: new Date(),
     };
 
     setCurrentParticipant(participant);
-    setParticipants(prev => [...prev, participant]);
+    _setParticipants(prev => [...prev, participant]);
     setShowParticipantEntry(false);
-    
+
     // Set the timeframe from session config
     if (sessionConfig) {
       setTimeframe(sessionConfig.timeframe);
@@ -259,18 +257,18 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
   };
 
   const handleAssessmentComplete = async () => {
-    if (!currentParticipant || !sessionConfig || !currentSession) return;
+    if (!currentParticipant || !sessionConfig || !_currentSession) {return;}
 
     // Update participant status
     const updatedParticipant: Participant = {
       ...currentParticipant,
       status: 'completed',
       completedAt: new Date(),
-      assessmentData: currentSession
+      assessmentData: _currentSession,
     };
 
-    setParticipants(prev => 
-      prev.map(p => p.id === currentParticipant.id ? updatedParticipant : p)
+    _setParticipants(prev =>
+      prev.map(p => p.id === currentParticipant.id ? updatedParticipant : p),
     );
 
     // Auto-email results if enabled
@@ -278,8 +276,8 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
       const emailTemplate = EmailService.getEmailTemplates().default;
       await EmailService.sendAssessmentResults(
         updatedParticipant,
-        currentSession,
-        emailTemplate
+        _currentSession,
+        emailTemplate,
       );
       toast.success('Results have been emailed to you!');
     }
@@ -293,7 +291,7 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
   const handleTestModeSelected = (mode: TestMode) => {
     setSelectedTestMode(mode);
     setShowTestModeSelector(false);
-    
+
     if (mode.type === 'comprehensive') {
       // Set up comprehensive emotions list
       const allEmotions = getAllEmotions();
@@ -303,11 +301,11 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
       const quickEmotions = [
         ...QUICK_TEST_EMOTIONS.primary,
         ...QUICK_TEST_EMOTIONS.secondary,
-        ...QUICK_TEST_EMOTIONS.tertiary
+        ...QUICK_TEST_EMOTIONS.tertiary,
       ];
       setComprehensiveEmotions(quickEmotions);
     }
-    
+
     toast.success(`${mode.type === 'quick' ? 'Quick' : 'Comprehensive'} test mode selected!`);
   };
 
@@ -352,8 +350,8 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
             <div className="bg-blue-50 p-6 rounded-lg border border-blue-200">
               <h3 className="font-semibold text-lg mb-3">Instructions</h3>
               <p className="text-gray-700 mb-4">
-                This assessment uses validated psychological instruments to measure your emotional experience. 
-                It combines the Geneva Emotion Wheel (GEW), PANAS scales, and dimensional emotion models 
+                This assessment uses validated psychological instruments to measure your emotional experience.
+                It combines the Geneva Emotion Wheel (GEW), PANAS scales, and dimensional emotion models
                 used in contemporary emotion research.
               </p>
               <p className="text-sm text-gray-600">
@@ -362,7 +360,7 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
                 <strong>Research base:</strong> Validated instruments from peer-reviewed psychology literature
               </p>
             </div>
-            
+
             <div className="space-y-4">
               <h3 className="font-semibold">Select Assessment Timeframe:</h3>
               {timeframeOptions.map((option) => (
@@ -387,7 +385,7 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
               <div className="bg-green-50 p-4 rounded-lg border border-green-200">
                 <h3 className="font-semibold text-green-800 mb-2">Previous Assessments Available</h3>
                 <p className="text-green-700 text-sm">
-                  You have {assessmentHistory.length} previous assessment(s). 
+                  You have {assessmentHistory.length} previous assessment(s).
                   Upload a PDF from a previous session to enable trend analysis.
                 </p>
                 <div className="mt-3">
@@ -531,7 +529,7 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
                 <strong>Life Context:</strong> Please provide context about your current circumstances to help interpret your emotional assessment.
               </p>
             </div>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -631,18 +629,18 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
 
   if (showResults) {
     const { scores, insights, recommendations } = calculateResults();
-    
+
     // Debug logging
     console.log('Assessment Responses:', responses);
     console.log('Plutchik Scores:', scores.plutchik);
     console.log('GEW Scores:', scores.gew);
     console.log('PANAS Scores:', scores.panas);
-    
+
     const radarData = [
       { dimension: 'Positive High-Arousal', score: scores.gew.positiveHighArousal, fullMark: 20 },
       { dimension: 'Positive Low-Arousal', score: scores.gew.positiveLowArousal, fullMark: 20 },
       { dimension: 'Negative Low-Arousal', score: scores.gew.negativeLowArousal, fullMark: 20 },
-      { dimension: 'Negative High-Arousal', score: scores.gew.negativeHighArousal, fullMark: 20 }
+      { dimension: 'Negative High-Arousal', score: scores.gew.negativeHighArousal, fullMark: 20 },
     ];
 
     const scatterData = GEW_EMOTIONS
@@ -651,13 +649,13 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
         x: emotion.valence * 100,
         y: emotion.power * 100,
         size: (responses[emotion.name] || 0) * 20,
-        name: emotion.name
+        name: emotion.name,
       }));
 
     const plutchikData = Object.entries(scores.plutchik)
       .map(([emotion, score]) => ({
         emotion: emotion.charAt(0).toUpperCase() + emotion.slice(1),
-        score: score || 0
+        score: score || 0,
       }))
       .sort((a, b) => b.score - a.score);
 
@@ -667,7 +665,7 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
           <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
             Comprehensive Emotional Assessment Results
           </h1>
-          
+
           <div className="mb-6 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
             <p className="text-sm text-gray-600">
               <strong>Assessment Framework:</strong> Geneva Emotion Wheel (GEW) + PANAS scales + Dimensional analysis + Plutchik's Wheel
@@ -703,7 +701,7 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={[
                   { affect: 'Positive Affect', score: scores.panas.positive, color: '#10b981' },
-                  { affect: 'Negative Affect', score: scores.panas.negative, color: '#ef4444' }
+                  { affect: 'Negative Affect', score: scores.panas.negative, color: '#ef4444' },
                 ]}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="affect" />
@@ -739,21 +737,21 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
                 <ResponsiveContainer width="100%" height={300}>
                   <ScatterChart>
                     <CartesianGrid />
-                    <XAxis 
-                      type="number" 
-                      dataKey="x" 
-                      name="Valence" 
+                    <XAxis
+                      type="number"
+                      dataKey="x"
+                      name="Valence"
                       domain={[-100, 100]}
                       label={{ value: 'Valence (Unpleasant ← → Pleasant)', position: 'insideBottom', offset: -5 }}
                     />
-                    <YAxis 
-                      type="number" 
-                      dataKey="y" 
-                      name="Power" 
+                    <YAxis
+                      type="number"
+                      dataKey="y"
+                      name="Power"
                       domain={[-100, 100]}
                       label={{ value: 'Power (Submissive ← → Dominant)', angle: -90, position: 'insideLeft' }}
                     />
-                    <Tooltip 
+                    <Tooltip
                       cursor={{ strokeDasharray: '3 3' }}
                       formatter={(value, name) => name === 'size' ? ['Intensity', 'Intensity'] : [value, name]}
                       labelFormatter={(label) => `Emotion: ${scatterData.find(d => d.x === label)?.name || 'Unknown'}`}
@@ -816,7 +814,7 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
                 </>
               )}
             </button>
-            
+
             <button
               onClick={() => {
                 setShowResults(false);
@@ -839,7 +837,7 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
     <div className="max-w-6xl mx-auto p-6 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 min-h-screen">
       {/* Test Mode Selector */}
       {showTestModeSelector && (
-        <TestModeSelector onModeSelected={handleTestModeSelected} />
+                      <TestModeSelector onTestModeSelected={handleTestModeSelected} />
       )}
 
       {/* Multi-user Session Controls */}
@@ -853,19 +851,19 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
               <Brain className="w-4 h-4 inline mr-2" />
               Change Test Mode
             </button>
-            
+
             <button
               onClick={toggleSessionManager}
               className={`px-4 py-2 rounded-lg transition-colors font-medium ${
-                isSessionManager 
-                  ? 'bg-blue-600 text-white' 
+                isSessionManager
+                  ? 'bg-blue-600 text-white'
                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
               }`}
             >
               <Users className="w-4 h-4 inline mr-2" />
               {isSessionManager ? 'Hide Session Manager' : 'Session Manager'}
             </button>
-            
+
             {sessionConfig && (
               <button
                 onClick={() => setShowParticipantEntry(true)}
@@ -876,7 +874,7 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
               </button>
             )}
           </div>
-          
+
           {currentParticipant && (
             <div className="text-sm text-gray-600">
               <span className="font-medium">Participant:</span> {currentParticipant.name}
@@ -893,10 +891,11 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
 
       {/* Participant Entry */}
       {!showTestModeSelector && showParticipantEntry && sessionConfig && (
-        <ParticipantEntry 
-          sessionConfig={sessionConfig} 
-          onParticipantEntered={handleParticipantEntered} 
-        />
+                      <ParticipantEntry
+                sessionConfig={sessionConfig}
+                onParticipantEntered={handleParticipantEntered}
+                onBack={() => setShowParticipantEntry(false)}
+              />
       )}
 
       {/* Main Assessment */}
@@ -929,7 +928,7 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
               </span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
-              <div 
+              <div
                 className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-500"
                 style={{ width: `${((currentPhase + 1) / phases.length) * 100}%` }}
               ></div>
@@ -954,7 +953,7 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
             >
               Previous
             </button>
-            
+
             <button
               onClick={() => {
                 if (currentPhase === phases.length - 1) {
@@ -979,9 +978,9 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
 
           <div className="mt-8 text-xs text-gray-500 text-center">
             <p>
-              <strong>Research Citations:</strong> Geneva Emotion Wheel (Scherer et al., 2013) | 
-              PANAS (Watson, Clark & Tellegen, 1988) | 
-              Circumplex Model (Russell, 1980) | 
+              <strong>Research Citations:</strong> Geneva Emotion Wheel (Scherer et al., 2013) |
+              PANAS (Watson, Clark & Tellegen, 1988) |
+              Circumplex Model (Russell, 1980) |
               Plutchik's Wheel (Plutchik, 1980)
             </p>
           </div>

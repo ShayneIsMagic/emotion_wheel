@@ -21,20 +21,20 @@ export class EmailService {
     participant: Participant,
     results: AssessmentSession,
     template: EmailTemplate,
-    pdfBlob?: Blob
+    pdfBlob?: Blob,
   ): Promise<boolean> {
     try {
       // In a real implementation, you would integrate with an email service
       // like SendGrid, Mailgun, or AWS SES
-      
+
       const emailData = this.prepareEmailData(participant, results, template, pdfBlob);
-      
+
       // Simulate email sending
       console.log('Sending email:', emailData);
-      
+
       // For demo purposes, we'll simulate a successful email send
       await this.simulateEmailSend(emailData);
-      
+
       return true;
     } catch (error) {
       console.error('Error sending email:', error);
@@ -49,30 +49,30 @@ export class EmailService {
     participant: Participant,
     results: AssessmentSession,
     template: EmailTemplate,
-    pdfBlob?: Blob
+    pdfBlob?: Blob,
   ) {
     const subject = template.subject || this.DEFAULT_SUBJECT;
     let body = template.body || this.DEFAULT_BODY;
-    
+
     // Personalize the email
     body = body.replace('{{name}}', participant.name);
     body = body.replace('{{email}}', participant.email);
     body = body.replace('{{completionDate}}', results.timestamp.toLocaleDateString());
-    
+
     if (template.customMessage) {
       body += `\n\n${template.customMessage}`;
     }
-    
+
     if (template.includeInstructions) {
       body += this.getResultsInterpretationGuide();
     }
-    
+
     return {
       to: participant.email,
       subject,
       body,
       attachments: pdfBlob ? [{ filename: 'emotional_assessment_results.pdf', content: pdfBlob }] : [],
-      html: this.convertToHTML(body)
+      html: this.convertToHTML(body),
     };
   }
 
@@ -133,7 +133,7 @@ export class EmailService {
   static async sendBulkAssessmentResults(
     participants: Participant[],
     results: AssessmentSession[],
-    template: EmailTemplate
+    template: EmailTemplate,
   ): Promise<{ success: number; failed: number }> {
     let success = 0;
     let failed = 0;
@@ -141,7 +141,7 @@ export class EmailService {
     for (let i = 0; i < participants.length; i++) {
       const participant = participants[i];
       const result = results[i];
-      
+
       if (result) {
         const sent = await this.sendAssessmentResults(participant, result, template);
         if (sent) {
@@ -149,7 +149,7 @@ export class EmailService {
         } else {
           failed++;
         }
-        
+
         // Add delay between emails to avoid rate limiting
         await new Promise(resolve => setTimeout(resolve, 100));
       }
@@ -163,10 +163,10 @@ export class EmailService {
    */
   static async sendReminderEmails(
     participants: Participant[],
-    template: EmailTemplate
+    template: EmailTemplate,
   ): Promise<{ success: number; failed: number }> {
     const incompleteParticipants = participants.filter(p => p.status !== 'completed');
-    
+
     let success = 0;
     let failed = 0;
 
@@ -174,7 +174,7 @@ export class EmailService {
       const reminderTemplate: EmailTemplate = {
         ...template,
         subject: `Reminder: ${template.subject}`,
-        body: `Hi ${participant.name},\n\nThis is a friendly reminder to complete your emotional assessment.\n\n${template.body}`
+        body: `Hi ${participant.name},\n\nThis is a friendly reminder to complete your emotional assessment.\n\n${template.body}`,
       };
 
       const sent = await this.sendAssessmentResults(participant, {} as AssessmentSession, reminderTemplate);
@@ -183,7 +183,7 @@ export class EmailService {
       } else {
         failed++;
       }
-      
+
       await new Promise(resolve => setTimeout(resolve, 100));
     }
 
@@ -199,26 +199,26 @@ export class EmailService {
         subject: 'Your Emotional Assessment Results',
         body: 'Thank you for completing the Emotional Assessment. Your results are attached.',
         includePDF: true,
-        includeInstructions: true
+        includeInstructions: true,
       },
       reminder: {
         subject: 'Reminder: Complete Your Emotional Assessment',
         body: 'You haven\'t completed your emotional assessment yet. Please take a few minutes to complete it.',
         includePDF: false,
-        includeInstructions: false
+        includeInstructions: false,
       },
       followUp: {
         subject: 'Follow-up: Your Emotional Assessment Results',
         body: 'Here are your emotional assessment results. We hope this helps with your emotional well-being journey.',
         includePDF: true,
-        includeInstructions: true
+        includeInstructions: true,
       },
       research: {
         subject: 'Research Study: Emotional Assessment Results',
         body: 'Thank you for participating in our research study. Your assessment results are attached.',
         includePDF: true,
-        includeInstructions: false
-      }
+        includeInstructions: false,
+      },
     };
   }
 }

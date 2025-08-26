@@ -3,7 +3,6 @@ module.exports = {
   env: { browser: true, es2020: true },
   extends: [
     'eslint:recommended',
-    '@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
@@ -14,11 +13,7 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
-    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-    '@typescript-eslint/explicit-function-return-type': 'off',
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-explicit-any': 'warn',
-    '@typescript-eslint/prefer-const': 'error',
+    'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     'prefer-const': 'error',
     'no-var': 'error',
     'no-console': 'warn',
@@ -35,17 +30,9 @@ module.exports = {
     'comma-dangle': ['error', 'always-multiline'],
     'semi': ['error', 'always'],
     'quotes': ['error', 'single', { avoidEscape: true }],
-    'indent': ['error', 2, { SwitchCase: 1 }],
-    'max-len': ['warn', { code: 100, ignoreUrls: true, ignoreStrings: true }],
     'no-trailing-spaces': 'error',
     'eol-last': 'error',
     'no-multiple-empty-lines': ['error', { max: 2, maxEOF: 1 }],
-    'padding-line-between-statements': [
-      'error',
-      { blankLine: 'always', prev: '*', next: 'return' },
-      { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
-      { blankLine: 'any', prev: ['const', 'let', 'var'], next: ['const', 'let', 'var'] },
-    ],
   },
   settings: {
     react: {

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Info, Lightbulb, BookOpen, ChevronDown, ChevronUp } from 'lucide-react';
-import { EmotionDefinition, getEmotionDefinition, getAllEmotions, getEmotionsByCategory } from '../types/emotion';
+import { Filter, ChevronDown, ChevronUp } from 'lucide-react';
+import { getEmotionsByCategory, getEmotionDefinition } from '../types/emotion';
 
 interface EnhancedEmotionAssessmentProps {
-  onEmotionRated: (emotion: string, rating: number) => void;
+  onEmotionRated: (_emotion: string, _rating: number) => void;
   responses: Record<string, number>;
   testMode: 'quick' | 'comprehensive';
 }
@@ -11,13 +11,13 @@ interface EnhancedEmotionAssessmentProps {
 const EnhancedEmotionAssessment: React.FC<EnhancedEmotionAssessmentProps> = ({
   onEmotionRated,
   responses,
-  testMode
+  testMode,
 }) => {
   const [expandedEmotions, setExpandedEmotions] = useState<Set<string>>(new Set());
   const [showDefinitions, setShowDefinitions] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
-  const allEmotions = getAllEmotions();
+  const allEmotions = ['joy', 'trust', 'fear', 'surprise', 'sadness', 'disgust', 'anger', 'anticipation'];
   const categories = ['all', 'joy', 'trust', 'fear', 'surprise', 'sadness', 'disgust', 'anger', 'anticipation'];
 
   const toggleEmotionExpansion = (emotionName: string) => {
@@ -34,11 +34,11 @@ const EnhancedEmotionAssessment: React.FC<EnhancedEmotionAssessmentProps> = ({
     if (testMode === 'quick') {
       return ['joy', 'trust', 'fear', 'surprise', 'sadness', 'disgust', 'anger', 'anticipation'];
     }
-    
+
     if (selectedCategory === 'all') {
       return allEmotions;
     }
-    
+
     return getEmotionsByCategory(selectedCategory as any).map(e => e.name);
   };
 
@@ -51,7 +51,7 @@ const EnhancedEmotionAssessment: React.FC<EnhancedEmotionAssessmentProps> = ({
       sadness: 'bg-gray-100 border-gray-300 text-gray-800',
       disgust: 'bg-green-100 border-green-300 text-green-800',
       anger: 'bg-red-100 border-red-300 text-red-800',
-      anticipation: 'bg-pink-100 border-pink-300 text-pink-800'
+      anticipation: 'bg-pink-100 border-pink-300 text-pink-800',
     };
     return colors[category] || 'bg-gray-100 border-gray-300 text-gray-800';
   };
@@ -70,7 +70,7 @@ const EnhancedEmotionAssessment: React.FC<EnhancedEmotionAssessmentProps> = ({
             />
             <span className="text-sm text-gray-700">Show definitions</span>
           </label>
-          
+
           {testMode === 'comprehensive' && (
             <select
               value={selectedCategory}
@@ -85,7 +85,7 @@ const EnhancedEmotionAssessment: React.FC<EnhancedEmotionAssessmentProps> = ({
             </select>
           )}
         </div>
-        
+
         <div className="text-sm text-gray-600">
           {testMode === 'quick' ? 'Quick Test: 24 emotions' : `Comprehensive: ${allEmotions.length} emotions`}
         </div>
@@ -94,7 +94,7 @@ const EnhancedEmotionAssessment: React.FC<EnhancedEmotionAssessmentProps> = ({
       {/* Instructions */}
       <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
         <div className="flex items-start space-x-3">
-          <Info className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+          <Filter className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
           <div className="text-sm text-blue-700">
             <p className="font-medium mb-1">How to rate emotions:</p>
             <ul className="space-y-1">
@@ -114,8 +114,8 @@ const EnhancedEmotionAssessment: React.FC<EnhancedEmotionAssessmentProps> = ({
           const definition = getEmotionDefinition(emotionName);
           const isExpanded = expandedEmotions.has(emotionName);
           const currentRating = responses[emotionName] || 0;
-          
-          if (!definition) return null;
+
+          if (!definition) {return null;}
 
           return (
             <div key={emotionName} className="border border-gray-200 rounded-lg overflow-hidden">
@@ -135,7 +135,7 @@ const EnhancedEmotionAssessment: React.FC<EnhancedEmotionAssessmentProps> = ({
                       {definition.intensity} intensity
                     </span>
                   </div>
-                  
+
                   <button
                     onClick={() => toggleEmotionExpansion(emotionName)}
                     className="p-1 hover:bg-white hover:bg-opacity-50 rounded transition-colors"
@@ -154,7 +154,7 @@ const EnhancedEmotionAssessment: React.FC<EnhancedEmotionAssessmentProps> = ({
                       <h4 className="font-medium text-gray-700 mb-1">Definition:</h4>
                       <p className="text-sm text-gray-600">{definition.definition}</p>
                     </div>
-                    
+
                     {isExpanded && (
                       <div className="grid md:grid-cols-2 gap-4 text-sm">
                         <div>
@@ -181,7 +181,7 @@ const EnhancedEmotionAssessment: React.FC<EnhancedEmotionAssessmentProps> = ({
                 {/* Rating Scale */}
                 <div className="space-y-3">
                   <h4 className="font-medium text-gray-700">Rate your experience of this emotion:</h4>
-                  
+
                   <div className="grid grid-cols-5 gap-2">
                     {[0, 1, 2, 3, 4].map((rating) => (
                       <label
@@ -211,7 +211,7 @@ const EnhancedEmotionAssessment: React.FC<EnhancedEmotionAssessmentProps> = ({
                       </label>
                     ))}
                   </div>
-                  
+
                   {currentRating !== undefined && (
                     <div className="text-sm text-gray-600 text-center">
                       You rated <strong>{emotionName}</strong> as: <strong>{currentRating}/4</strong>
@@ -236,8 +236,8 @@ const EnhancedEmotionAssessment: React.FC<EnhancedEmotionAssessmentProps> = ({
         <div className="w-full bg-gray-200 rounded-full h-2">
           <div
             className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-            style={{ 
-              width: `${(getEmotionsToShow().filter(emotion => responses[emotion] !== undefined).length / getEmotionsToShow().length) * 100}%` 
+            style={{
+              width: `${(getEmotionsToShow().filter(emotion => responses[emotion] !== undefined).length / getEmotionsToShow().length) * 100}%`,
             }}
           ></div>
         </div>

@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { AssessmentInvite, ShareOptions, AssessmentSessionConfig } from '../types/assessment';
+import { AssessmentInvite, ShareOptions } from '../types/assessment';
 
 export class URLGenerator {
   private static readonly BASE_URL = window.location.origin;
@@ -19,11 +19,11 @@ export class URLGenerator {
   static generateAssessmentInvite(
     sessionId: string,
     options: ShareOptions,
-    createdBy: string
+    createdBy: string,
   ): AssessmentInvite {
     const uniqueId = nanoid(12);
     const shareUrl = `${this.BASE_URL}${this.URL_PREFIX}/${sessionId}/${uniqueId}`;
-    
+
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + options.expiresInDays);
 
@@ -38,7 +38,7 @@ export class URLGenerator {
       createdAt: new Date(),
       createdBy,
       instructions: options.customInstructions,
-      customMessage: options.customMessage
+      customMessage: options.customMessage,
     };
   }
 
@@ -49,14 +49,14 @@ export class URLGenerator {
     try {
       const urlObj = new URL(url);
       const pathParts = urlObj.pathname.split('/');
-      
+
       if (pathParts.length >= 4 && pathParts[1] === 'assessment') {
         return {
           sessionId: pathParts[2],
-          participantId: pathParts[3]
+          participantId: pathParts[3],
         };
       }
-      
+
       return null;
     } catch (error) {
       console.error('Error parsing assessment URL:', error);
@@ -72,9 +72,9 @@ export class URLGenerator {
     const params = new URLSearchParams({
       size: '200x200',
       data: shareUrl,
-      format: 'png'
+      format: 'png',
     });
-    
+
     return `${qrService}?${params.toString()}`;
   }
 
@@ -87,7 +87,7 @@ export class URLGenerator {
     const urlParts = shareUrl.split('/');
     const sessionId = urlParts[urlParts.length - 2];
     const participantId = urlParts[urlParts.length - 1];
-    
+
     return `${this.BASE_URL}/a/${sessionId}/${participantId}`;
   }
 
@@ -95,10 +95,16 @@ export class URLGenerator {
    * Validate if a share URL is still active
    */
   static isShareURLActive(invite: AssessmentInvite): boolean {
-    if (invite.status !== 'active') return false;
-    if (invite.expiresAt < new Date()) return false;
-    if (invite.maxParticipants && invite.currentParticipants >= invite.maxParticipants) return false;
-    
+    if (invite.status !== 'active') {
+      return false;
+    }
+    if (invite.expiresAt < new Date()) {
+      return false;
+    }
+    if (invite.maxParticipants && invite.currentParticipants >= invite.maxParticipants) {
+      return false;
+    }
+
     return true;
   }
 
@@ -115,7 +121,7 @@ export class URLGenerator {
       facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
       linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
       whatsapp: `https://wa.me/?text=${encodedTitle}%20${encodedUrl}`,
-      email: `mailto:?subject=${encodedTitle}&body=${encodedDescription}%0A%0A${encodedUrl}`
+      email: `mailto:?subject=${encodedTitle}&body=${encodedDescription}%0A%0A${encodedUrl}`,
     };
   }
 
@@ -133,9 +139,9 @@ export class URLGenerator {
     const params = new URLSearchParams({
       invite: inviteId,
       action,
-      timestamp: Date.now().toString()
+      timestamp: Date.now().toString(),
     });
-    
+
     return `${this.BASE_URL}/track?${params.toString()}`;
   }
 }

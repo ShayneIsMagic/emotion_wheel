@@ -3,23 +3,23 @@ import { Clock, Brain, Zap, BookOpen } from 'lucide-react';
 import { TestMode } from '../types/emotion';
 
 interface TestModeSelectorProps {
-  onModeSelected: (mode: TestMode) => void;
+  onTestModeSelected: (_mode: TestMode) => void;
 }
 
-const TestModeSelector: React.FC<TestModeSelectorProps> = ({ onModeSelected }) => {
+const TestModeSelector: React.FC<TestModeSelectorProps> = ({ onTestModeSelected }) => {
   const testModes: TestMode[] = [
     {
       type: 'quick',
       description: 'Rapid assessment focusing on core emotions',
       estimatedTime: '5-8 minutes',
-      emotions: ['8 primary emotions', '6 secondary emotions', '6 tertiary emotions']
+      emotions: ['8 primary emotions', '6 secondary emotions', '6 tertiary emotions'],
     },
     {
       type: 'comprehensive',
       description: 'Full emotional assessment with all emotion categories',
       estimatedTime: '15-20 minutes',
-      emotions: ['All Plutchik emotions', 'Geneva Emotion Wheel', 'PANAS scales', 'Dimensional assessment', 'Additional emotions']
-    }
+      emotions: ['All Plutchik emotions', 'Geneva Emotion Wheel', 'PANAS scales', 'Dimensional assessment', 'Additional emotions'],
+    },
   ];
 
   return (
@@ -39,7 +39,7 @@ const TestModeSelector: React.FC<TestModeSelectorProps> = ({ onModeSelected }) =
             <div
               key={mode.type}
               className="border-2 border-gray-200 rounded-xl p-6 hover:border-blue-400 hover:shadow-lg transition-all duration-300 cursor-pointer"
-              onClick={() => onModeSelected(mode)}
+              onClick={() => onTestModeSelected(mode)}
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-3">

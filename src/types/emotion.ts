@@ -12,17 +12,17 @@ export interface Emotion {
   evolutionaryFunction?: string; // Plutchik's evolutionary function
 }
 
-export type EmotionCategory = 
-  | 'joy' 
-  | 'trust' 
-  | 'fear' 
-  | 'surprise' 
-  | 'sadness' 
-  | 'disgust' 
-  | 'anger' 
+export type EmotionCategory =
+  | 'joy'
+  | 'trust'
+  | 'fear'
+  | 'surprise'
+  | 'sadness'
+  | 'disgust'
+  | 'anger'
   | 'anticipation';
 
-export type EmotionalQuadrant = 
+export type EmotionalQuadrant =
   | 'positive_high_arousal'
   | 'positive_low_arousal'
   | 'negative_low_arousal'
@@ -177,7 +177,7 @@ export const COMPREHENSIVE_EMOTION_VOCABULARY: EmotionDefinition[] = [
     synonyms: ['happiness', 'delight', 'elation'],
     relatedEmotions: ['ecstasy', 'excitement', 'enthusiasm'],
     evolutionaryFunction: 'Promotes social bonding and positive reinforcement',
-    commonTriggers: ['achievement', 'social connection', 'pleasant surprises']
+    commonTriggers: ['achievement', 'social connection', 'pleasant surprises'],
   },
   {
     name: 'ecstasy',
@@ -187,7 +187,7 @@ export const COMPREHENSIVE_EMOTION_VOCABULARY: EmotionDefinition[] = [
     synonyms: ['rapture', 'bliss', 'euphoria'],
     relatedEmotions: ['joy', 'elation', 'exhilaration'],
     evolutionaryFunction: 'Reinforces highly rewarding behaviors',
-    commonTriggers: ['peak experiences', 'spiritual moments', 'intense pleasure']
+    commonTriggers: ['peak experiences', 'spiritual moments', 'intense pleasure'],
   },
   {
     name: 'contentment',
@@ -197,7 +197,7 @@ export const COMPREHENSIVE_EMOTION_VOCABULARY: EmotionDefinition[] = [
     synonyms: ['satisfaction', 'fulfillment', 'peace'],
     relatedEmotions: ['serenity', 'tranquility', 'gratitude'],
     evolutionaryFunction: 'Signals well-being and reduces stress',
-    commonTriggers: ['basic needs met', 'comfortable environment', 'achievement']
+    commonTriggers: ['basic needs met', 'comfortable environment', 'achievement'],
   },
   {
     name: 'gratitude',
@@ -207,7 +207,7 @@ export const COMPREHENSIVE_EMOTION_VOCABULARY: EmotionDefinition[] = [
     synonyms: ['thankfulness', 'appreciation', 'recognition'],
     relatedEmotions: ['joy', 'contentment', 'love'],
     evolutionaryFunction: 'Strengthens social bonds and reciprocity',
-    commonTriggers: ['receiving help', 'positive experiences', 'reflection']
+    commonTriggers: ['receiving help', 'positive experiences', 'reflection'],
   },
 
   // TRUST FAMILY - Positive Connection
@@ -219,7 +219,7 @@ export const COMPREHENSIVE_EMOTION_VOCABULARY: EmotionDefinition[] = [
     synonyms: ['confidence', 'faith', 'reliance'],
     relatedEmotions: ['acceptance', 'admiration', 'love'],
     evolutionaryFunction: 'Enables cooperation and social cohesion',
-    commonTriggers: ['consistent behavior', 'shared values', 'positive experiences']
+    commonTriggers: ['consistent behavior', 'shared values', 'positive experiences'],
   },
   {
     name: 'love',
@@ -229,7 +229,7 @@ export const COMPREHENSIVE_EMOTION_VOCABULARY: EmotionDefinition[] = [
     synonyms: ['affection', 'devotion', 'adoration'],
     relatedEmotions: ['trust', 'joy', 'compassion'],
     evolutionaryFunction: 'Strengthens pair bonds and family ties',
-    commonTriggers: ['intimate relationships', 'family bonds', 'deep connection']
+    commonTriggers: ['intimate relationships', 'family bonds', 'deep connection'],
   },
   {
     name: 'compassion',
@@ -239,7 +239,7 @@ export const COMPREHENSIVE_EMOTION_VOCABULARY: EmotionDefinition[] = [
     synonyms: ['empathy', 'sympathy', 'kindness'],
     relatedEmotions: ['love', 'trust', 'caring'],
     evolutionaryFunction: 'Promotes altruism and group survival',
-    commonTriggers: ['witnessing suffering', 'empathy', 'moral values']
+    commonTriggers: ['witnessing suffering', 'empathy', 'moral values'],
   },
 
   // FEAR FAMILY - Threat Response
@@ -251,7 +251,7 @@ export const COMPREHENSIVE_EMOTION_VOCABULARY: EmotionDefinition[] = [
     synonyms: ['terror', 'dread', 'anxiety'],
     relatedEmotions: ['terror', 'anxiety', 'worry'],
     evolutionaryFunction: 'Protects from danger through fight-or-flight response',
-    commonTriggers: ['threats', 'uncertainty', 'danger']
+    commonTriggers: ['threats', 'uncertainty', 'danger'],
   },
   {
     name: 'terror',
@@ -261,7 +261,7 @@ export const COMPREHENSIVE_EMOTION_VOCABULARY: EmotionDefinition[] = [
     synonyms: ['horror', 'panic', 'dread'],
     relatedEmotions: ['fear', 'anxiety', 'panic'],
     evolutionaryFunction: 'Triggers immediate survival responses',
-    commonTriggers: ['life-threatening situations', 'trauma', 'extreme danger']
+    commonTriggers: ['life-threatening situations', 'trauma', 'extreme danger'],
   },
   {
     name: 'anxiety',
@@ -271,7 +271,7 @@ export const COMPREHENSIVE_EMOTION_VOCABULARY: EmotionDefinition[] = [
     synonyms: ['worry', 'nervousness', 'unease'],
     relatedEmotions: ['fear', 'worry', 'stress'],
     evolutionaryFunction: 'Prepares for potential threats',
-    commonTriggers: ['uncertainty', 'stress', 'future concerns']
+    commonTriggers: ['uncertainty', 'stress', 'future concerns'],
   },
 
   // SURPRISE FAMILY - Novelty Response
@@ -283,7 +283,7 @@ export const COMPREHENSIVE_EMOTION_VOCABULARY: EmotionDefinition[] = [
     synonyms: ['amazement', 'astonishment', 'wonder'],
     relatedEmotions: ['amazement', 'wonder', 'curiosity'],
     evolutionaryFunction: 'Prepares for new situations and learning',
-    commonTriggers: ['unexpected events', 'new information', 'sudden changes']
+    commonTriggers: ['unexpected events', 'new information', 'sudden changes'],
   },
   {
     name: 'wonder',
@@ -293,7 +293,7 @@ export const COMPREHENSIVE_EMOTION_VOCABULARY: EmotionDefinition[] = [
     synonyms: ['amazement', 'awe', 'curiosity'],
     relatedEmotions: ['surprise', 'curiosity', 'awe'],
     evolutionaryFunction: 'Encourages exploration and learning',
-    commonTriggers: ['beautiful sights', 'mysterious phenomena', 'learning']
+    commonTriggers: ['beautiful sights', 'mysterious phenomena', 'learning'],
   },
   {
     name: 'curiosity',
@@ -303,7 +303,7 @@ export const COMPREHENSIVE_EMOTION_VOCABULARY: EmotionDefinition[] = [
     synonyms: ['interest', 'inquisitiveness', 'eagerness'],
     relatedEmotions: ['surprise', 'interest', 'anticipation'],
     evolutionaryFunction: 'Drives exploration and knowledge acquisition',
-    commonTriggers: ['new information', 'mysteries', 'learning opportunities']
+    commonTriggers: ['new information', 'mysteries', 'learning opportunities'],
   },
 
   // SADNESS FAMILY - Loss Response
@@ -315,7 +315,7 @@ export const COMPREHENSIVE_EMOTION_VOCABULARY: EmotionDefinition[] = [
     synonyms: ['sorrow', 'melancholy', 'grief'],
     relatedEmotions: ['grief', 'melancholy', 'loneliness'],
     evolutionaryFunction: 'Signals need for support and social connection',
-    commonTriggers: ['loss', 'disappointment', 'separation']
+    commonTriggers: ['loss', 'disappointment', 'separation'],
   },
   {
     name: 'grief',
@@ -325,7 +325,7 @@ export const COMPREHENSIVE_EMOTION_VOCABULARY: EmotionDefinition[] = [
     synonyms: ['mourning', 'bereavement', 'sorrow'],
     relatedEmotions: ['sadness', 'loss', 'despair'],
     evolutionaryFunction: 'Processes loss and signals need for support',
-    commonTriggers: ['death', 'major loss', 'endings']
+    commonTriggers: ['death', 'major loss', 'endings'],
   },
   {
     name: 'loneliness',
@@ -335,7 +335,7 @@ export const COMPREHENSIVE_EMOTION_VOCABULARY: EmotionDefinition[] = [
     synonyms: ['isolation', 'solitude', 'abandonment'],
     relatedEmotions: ['sadness', 'isolation', 'abandonment'],
     evolutionaryFunction: 'Motivates social connection',
-    commonTriggers: ['social isolation', 'rejection', 'separation']
+    commonTriggers: ['social isolation', 'rejection', 'separation'],
   },
 
   // DISGUST FAMILY - Rejection Response
@@ -347,7 +347,7 @@ export const COMPREHENSIVE_EMOTION_VOCABULARY: EmotionDefinition[] = [
     synonyms: ['revulsion', 'repulsion', 'aversion'],
     relatedEmotions: ['contempt', 'loathing', 'aversion'],
     evolutionaryFunction: 'Protects from harmful substances and behaviors',
-    commonTriggers: ['rotten food', 'unpleasant sights', 'moral violations']
+    commonTriggers: ['rotten food', 'unpleasant sights', 'moral violations'],
   },
   {
     name: 'contempt',
@@ -357,7 +357,7 @@ export const COMPREHENSIVE_EMOTION_VOCABULARY: EmotionDefinition[] = [
     synonyms: ['scorn', 'disdain', 'disrespect'],
     relatedEmotions: ['disgust', 'anger', 'disapproval'],
     evolutionaryFunction: 'Establishes social hierarchy and boundaries',
-    commonTriggers: ['perceived inferiority', 'moral violations', 'betrayal']
+    commonTriggers: ['perceived inferiority', 'moral violations', 'betrayal'],
   },
 
   // ANGER FAMILY - Obstacle Response
@@ -369,7 +369,7 @@ export const COMPREHENSIVE_EMOTION_VOCABULARY: EmotionDefinition[] = [
     synonyms: ['rage', 'fury', 'irritation'],
     relatedEmotions: ['rage', 'frustration', 'irritation'],
     evolutionaryFunction: 'Motivates overcoming obstacles and establishing boundaries',
-    commonTriggers: ['frustration', 'injustice', 'threats']
+    commonTriggers: ['frustration', 'injustice', 'threats'],
   },
   {
     name: 'rage',
@@ -379,7 +379,7 @@ export const COMPREHENSIVE_EMOTION_VOCABULARY: EmotionDefinition[] = [
     synonyms: ['fury', 'wrath', 'outrage'],
     relatedEmotions: ['anger', 'fury', 'outrage'],
     evolutionaryFunction: 'Provides energy for immediate action',
-    commonTriggers: ['extreme frustration', 'injustice', 'threats']
+    commonTriggers: ['extreme frustration', 'injustice', 'threats'],
   },
   {
     name: 'frustration',
@@ -389,7 +389,7 @@ export const COMPREHENSIVE_EMOTION_VOCABULARY: EmotionDefinition[] = [
     synonyms: ['irritation', 'annoyance', 'exasperation'],
     relatedEmotions: ['anger', 'irritation', 'annoyance'],
     evolutionaryFunction: 'Signals blocked goals and need for strategy change',
-    commonTriggers: ['obstacles', 'repeated failures', 'delays']
+    commonTriggers: ['obstacles', 'repeated failures', 'delays'],
   },
 
   // ANTICIPATION FAMILY - Future Orientation
@@ -401,7 +401,7 @@ export const COMPREHENSIVE_EMOTION_VOCABULARY: EmotionDefinition[] = [
     synonyms: ['expectation', 'hope', 'eagerness'],
     relatedEmotions: ['hope', 'expectation', 'eagerness'],
     evolutionaryFunction: 'Prepares for future events and opportunities',
-    commonTriggers: ['upcoming events', 'goals', 'positive expectations']
+    commonTriggers: ['upcoming events', 'goals', 'positive expectations'],
   },
   {
     name: 'hope',
@@ -411,7 +411,7 @@ export const COMPREHENSIVE_EMOTION_VOCABULARY: EmotionDefinition[] = [
     synonyms: ['optimism', 'expectation', 'aspiration'],
     relatedEmotions: ['anticipation', 'optimism', 'eagerness'],
     evolutionaryFunction: 'Maintains motivation and positive outlook',
-    commonTriggers: ['goals', 'positive thinking', 'faith']
+    commonTriggers: ['goals', 'positive thinking', 'faith'],
   },
   {
     name: 'optimism',
@@ -421,8 +421,8 @@ export const COMPREHENSIVE_EMOTION_VOCABULARY: EmotionDefinition[] = [
     synonyms: ['hope', 'confidence', 'positivity'],
     relatedEmotions: ['hope', 'anticipation', 'confidence'],
     evolutionaryFunction: 'Maintains motivation and resilience',
-    commonTriggers: ['positive experiences', 'success', 'supportive environment']
-  }
+    commonTriggers: ['positive experiences', 'success', 'supportive environment'],
+  },
 ];
 
 // Additional Contemporary Emotions
@@ -435,7 +435,7 @@ export const CONTEMPORARY_EMOTIONS: EmotionDefinition[] = [
     synonyms: ['accomplishment', 'satisfaction', 'achievement'],
     relatedEmotions: ['joy', 'satisfaction', 'confidence'],
     evolutionaryFunction: 'Reinforces successful behaviors and self-esteem',
-    commonTriggers: ['achievements', 'recognition', 'personal growth']
+    commonTriggers: ['achievements', 'recognition', 'personal growth'],
   },
   {
     name: 'shame',
@@ -445,7 +445,7 @@ export const CONTEMPORARY_EMOTIONS: EmotionDefinition[] = [
     synonyms: ['humiliation', 'embarrassment', 'guilt'],
     relatedEmotions: ['sadness', 'guilt', 'embarrassment'],
     evolutionaryFunction: 'Signals social norm violations and motivates correction',
-    commonTriggers: ['social mistakes', 'moral violations', 'public failure']
+    commonTriggers: ['social mistakes', 'moral violations', 'public failure'],
   },
   {
     name: 'envy',
@@ -455,7 +455,7 @@ export const CONTEMPORARY_EMOTIONS: EmotionDefinition[] = [
     synonyms: ['jealousy', 'resentment', 'covetousness'],
     relatedEmotions: ['sadness', 'resentment', 'dissatisfaction'],
     evolutionaryFunction: 'Motivates self-improvement and goal setting',
-    commonTriggers: ['comparing oneself to others', 'perceived unfairness', 'desire']
+    commonTriggers: ['comparing oneself to others', 'perceived unfairness', 'desire'],
   },
   {
     name: 'awe',
@@ -465,25 +465,25 @@ export const CONTEMPORARY_EMOTIONS: EmotionDefinition[] = [
     synonyms: ['wonder', 'amazement', 'reverence'],
     relatedEmotions: ['wonder', 'surprise', 'reverence'],
     evolutionaryFunction: 'Promotes spiritual and transcendent experiences',
-    commonTriggers: ['grandeur', 'spiritual experiences', 'natural wonders']
-  }
+    commonTriggers: ['grandeur', 'spiritual experiences', 'natural wonders'],
+  },
 ];
 
 // Quick Test Emotions (subset for rapid assessment)
 export const QUICK_TEST_EMOTIONS = {
   primary: ['joy', 'trust', 'fear', 'surprise', 'sadness', 'disgust', 'anger', 'anticipation'],
   secondary: ['contentment', 'love', 'anxiety', 'wonder', 'loneliness', 'contempt', 'frustration', 'hope'],
-  tertiary: ['gratitude', 'compassion', 'worry', 'curiosity', 'grief', 'aversion', 'irritation', 'optimism']
+  tertiary: ['gratitude', 'compassion', 'worry', 'curiosity', 'grief', 'aversion', 'irritation', 'optimism'],
 };
 
 // Get all emotions for comprehensive assessment
 export const getAllEmotions = () => [
   ...COMPREHENSIVE_EMOTION_VOCABULARY.map(e => e.name),
-  ...CONTEMPORARY_EMOTIONS.map(e => e.name)
+  ...CONTEMPORARY_EMOTIONS.map(e => e.name),
 ];
 
 // Get emotions by category
-export const getEmotionsByCategory = (category: EmotionCategory) => 
+export const getEmotionsByCategory = (category: EmotionCategory) =>
   COMPREHENSIVE_EMOTION_VOCABULARY.filter(e => e.category === category);
 
 // Get emotion definition
@@ -503,50 +503,50 @@ export const PRIMARY_EMOTIONS: Record<EmotionCategory, {
     name: 'Joy',
     evolutionaryFunction: 'Reproduction - Attracting mates and forming bonds',
     opposite: 'sadness',
-    color: '#FFE135'
+    color: '#FFE135',
   },
   trust: {
     name: 'Trust',
     evolutionaryFunction: 'Affiliation - Forming social bonds and cooperation',
     opposite: 'disgust',
-    color: '#87CEEB'
+    color: '#87CEEB',
   },
   fear: {
     name: 'Fear',
     evolutionaryFunction: 'Protection - Fight-or-flight response for survival',
     opposite: 'anger',
-    color: '#90EE90'
+    color: '#90EE90',
   },
   surprise: {
     name: 'Surprise',
     evolutionaryFunction: 'Exploration - Orienting to novel stimuli',
     opposite: 'anticipation',
-    color: '#DDA0DD'
+    color: '#DDA0DD',
   },
   sadness: {
     name: 'Sadness',
     evolutionaryFunction: 'Reintegration - Processing loss and seeking support',
     opposite: 'joy',
-    color: '#87CEFA'
+    color: '#87CEFA',
   },
   disgust: {
     name: 'Disgust',
     evolutionaryFunction: 'Rejection - Avoiding harmful substances',
     opposite: 'trust',
-    color: '#D3D3D3'
+    color: '#D3D3D3',
   },
   anger: {
     name: 'Anger',
     evolutionaryFunction: 'Destruction - Overcoming obstacles and threats',
     opposite: 'fear',
-    color: '#FFB6C1'
+    color: '#FFB6C1',
   },
   anticipation: {
     name: 'Anticipation',
     evolutionaryFunction: 'Exploration - Planning and preparation',
     opposite: 'surprise',
-    color: '#FFA500'
-  }
+    color: '#FFA500',
+  },
 };
 
 // Geneva Emotion Wheel validated emotions
@@ -555,7 +555,7 @@ export const GEW_EMOTIONS: Emotion[] = [
   { name: 'Interest', category: 'anticipation', intensity: 0, valence: 0.5, arousal: 0.3, power: 0.3, quadrant: 'positive_high_arousal', primary: false },
   { name: 'Pride', category: 'joy', intensity: 0, valence: 0.6, arousal: 0.7, power: 0.7, quadrant: 'positive_high_arousal', primary: false },
   { name: 'Admiration', category: 'trust', intensity: 0, valence: 0.4, arousal: 0.2, power: 0.2, quadrant: 'positive_high_arousal', primary: false },
-  
+
   // Positive Low Arousal
   { name: 'Amusement', category: 'joy', intensity: 0, valence: 0.7, arousal: 0.1, power: 0.1, quadrant: 'positive_low_arousal', primary: false },
   { name: 'Joy', category: 'joy', intensity: 0, valence: 0.8, arousal: 0.2, power: 0.2, quadrant: 'positive_low_arousal', primary: true },
@@ -564,26 +564,26 @@ export const GEW_EMOTIONS: Emotion[] = [
   { name: 'Love', category: 'trust', intensity: 0, valence: 0.6, arousal: 0.0, power: 0.0, quadrant: 'positive_low_arousal', primary: false },
   { name: 'Relief', category: 'joy', intensity: 0, valence: 0.3, arousal: -0.4, power: -0.4, quadrant: 'positive_low_arousal', primary: false },
   { name: 'Compassion', category: 'trust', intensity: 0, valence: 0.2, arousal: 0.1, power: 0.1, quadrant: 'positive_low_arousal', primary: false },
-  
+
   // Negative Low Arousal
   { name: 'Sadness', category: 'sadness', intensity: 0, valence: -0.6, arousal: -0.5, power: -0.5, quadrant: 'negative_low_arousal', primary: true },
   { name: 'Guilt', category: 'sadness', intensity: 0, valence: -0.4, arousal: -0.3, power: -0.3, quadrant: 'negative_low_arousal', primary: false },
   { name: 'Regret', category: 'sadness', intensity: 0, valence: -0.3, arousal: -0.2, power: -0.2, quadrant: 'negative_low_arousal', primary: false },
   { name: 'Shame', category: 'sadness', intensity: 0, valence: -0.5, arousal: -0.4, power: -0.4, quadrant: 'negative_low_arousal', primary: false },
   { name: 'Disappointment', category: 'sadness', intensity: 0, valence: -0.4, arousal: -0.1, power: -0.1, quadrant: 'negative_low_arousal', primary: false },
-  
+
   // Negative High Arousal
   { name: 'Fear', category: 'fear', intensity: 0, valence: -0.5, arousal: 0.3, power: 0.3, quadrant: 'negative_high_arousal', primary: true },
   { name: 'Disgust', category: 'disgust', intensity: 0, valence: -0.7, arousal: 0.1, power: 0.1, quadrant: 'negative_high_arousal', primary: true },
   { name: 'Contempt', category: 'disgust', intensity: 0, valence: -0.6, arousal: 0.4, power: 0.4, quadrant: 'negative_high_arousal', primary: false },
   { name: 'Hate', category: 'anger', intensity: 0, valence: -0.8, arousal: 0.6, power: 0.6, quadrant: 'negative_high_arousal', primary: false },
-  { name: 'Anger', category: 'anger', intensity: 0, valence: -0.5, arousal: 0.7, power: 0.7, quadrant: 'negative_high_arousal', primary: true }
+  { name: 'Anger', category: 'anger', intensity: 0, valence: -0.5, arousal: 0.7, power: 0.7, quadrant: 'negative_high_arousal', primary: true },
 ];
 
 // PANAS Scale items (validated positive and negative affect terms)
 export const PANAS_ITEMS = {
   positive: ['Enthusiastic', 'Alert', 'Determined', 'Excited', 'Inspired', 'Strong', 'Active', 'Proud', 'Attentive', 'Interested'],
-  negative: ['Distressed', 'Upset', 'Guilty', 'Scared', 'Hostile', 'Irritable', 'Ashamed', 'Nervous', 'Jittery', 'Afraid']
+  negative: ['Distressed', 'Upset', 'Guilty', 'Scared', 'Hostile', 'Irritable', 'Ashamed', 'Nervous', 'Jittery', 'Afraid'],
 } as const;
 
 export type PANASPositiveItem = typeof PANAS_ITEMS.positive[number];
@@ -591,24 +591,24 @@ export type PANASNegativeItem = typeof PANAS_ITEMS.negative[number];
 
 // Dimensional assessment items
 export const DIMENSIONAL_ITEMS = [
-  { 
-    name: 'valence' as const, 
-    description: 'How pleasant vs. unpleasant do you feel?', 
-    min: 'Very Unpleasant', 
-    max: 'Very Pleasant' 
+  {
+    name: 'valence' as const,
+    description: 'How pleasant vs. unpleasant do you feel?',
+    min: 'Very Unpleasant',
+    max: 'Very Pleasant',
   },
-  { 
-    name: 'arousal' as const, 
-    description: 'How activated/energized vs. calm/relaxed do you feel?', 
-    min: 'Very Calm', 
-    max: 'Very Activated' 
+  {
+    name: 'arousal' as const,
+    description: 'How activated/energized vs. calm/relaxed do you feel?',
+    min: 'Very Calm',
+    max: 'Very Activated',
   },
-  { 
-    name: 'power' as const, 
-    description: 'How powerful/in control vs. powerless/submissive do you feel?', 
-    min: 'Very Powerless', 
-    max: 'Very Powerful' 
-  }
+  {
+    name: 'power' as const,
+    description: 'How powerful/in control vs. powerless/submissive do you feel?',
+    min: 'Very Powerless',
+    max: 'Very Powerful',
+  },
 ] as const;
 
 export type DimensionalItem = typeof DIMENSIONAL_ITEMS[number];

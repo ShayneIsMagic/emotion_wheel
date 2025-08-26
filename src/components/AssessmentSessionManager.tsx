@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { 
-  Share2, 
-  Copy, 
-  QrCode, 
-  Link, 
-  Users, 
-  Download
+import {
+  Share2,
+  Copy,
+  QrCode,
+  Link,
+  Users,
+  Download,
 } from 'lucide-react';
 import { URLGenerator } from '../utils/urlGenerator';
 import { ShareOptions, AssessmentInvite, AssessmentSessionConfig } from '../types/assessment';
@@ -19,7 +19,7 @@ const AssessmentSessionManager: React.FC<AssessmentSessionManagerProps> = ({ onS
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [showShareOptions, setShowShareOptions] = useState(false);
   const [currentInvite, setCurrentInvite] = useState<AssessmentInvite | null>(null);
-  
+
   const [sessionConfig, setSessionConfig] = useState<Partial<AssessmentSessionConfig>>({
     title: '',
     description: '',
@@ -29,19 +29,13 @@ const AssessmentSessionManager: React.FC<AssessmentSessionManagerProps> = ({ onS
     requireName: true,
     autoEmailResults: true,
     maxParticipants: 100,
-    expiresInDays: 30
+    expiresInDays: 30,
   });
 
-  const [shareOptions, setShareOptions] = useState<ShareOptions>({
-    method: 'url',
-    expiresInDays: 30,
-    maxParticipants: 100,
-    requireEmail: true,
-    requireName: true,
-    autoEmailResults: true,
-    customMessage: '',
-    customInstructions: ''
-  });
+  const handleSessionCreated = (_config: AssessmentSessionConfig) => {
+    // Session creation logic would go here
+    toast.success('Assessment session created successfully!');
+  };
 
   const handleCreateSession = () => {
     if (!sessionConfig.title || !sessionConfig.description) {
@@ -63,13 +57,23 @@ const AssessmentSessionManager: React.FC<AssessmentSessionManagerProps> = ({ onS
       expiresInDays: sessionConfig.expiresInDays!,
       createdBy: 'current_user',
       createdAt: new Date(),
-      isActive: true
+      isActive: true,
     };
 
     onSessionCreated(config);
     setShowCreateForm(false);
-    toast.success('Assessment session created successfully!');
   };
+
+  const [_shareOptions, _setShareOptions] = useState<ShareOptions>({
+    method: 'url',
+    expiresInDays: 30,
+    maxParticipants: 100,
+    requireEmail: true,
+    requireName: true,
+    autoEmailResults: true,
+    customMessage: '',
+    customInstructions: '',
+  });
 
   const handleGenerateInvite = () => {
     if (!sessionConfig.id) {
@@ -79,8 +83,8 @@ const AssessmentSessionManager: React.FC<AssessmentSessionManagerProps> = ({ onS
 
     const invite = URLGenerator.generateAssessmentInvite(
       sessionConfig.id,
-      shareOptions,
-      'current_user'
+      _shareOptions,
+      'current_user',
     );
 
     setCurrentInvite(invite);
@@ -94,21 +98,21 @@ const AssessmentSessionManager: React.FC<AssessmentSessionManagerProps> = ({ onS
   };
 
   const generateQRCode = () => {
-    if (!currentInvite) return;
-    
+    if (!currentInvite) {return;}
+
     const qrUrl = URLGenerator.generateQRCodeURL(currentInvite.shareUrl);
     window.open(qrUrl, '_blank');
   };
 
   const generateSocialLinks = () => {
-    if (!currentInvite) return {};
-    
+    if (!currentInvite) {return {};}
+
     const socialLinks = URLGenerator.generateSocialMediaLinks(
       currentInvite.shareUrl,
       sessionConfig.title || 'Emotional Assessment',
-      sessionConfig.description || 'Take this comprehensive emotional assessment'
+      sessionConfig.description || 'Take this comprehensive emotional assessment',
     );
-    
+
     return socialLinks;
   };
 
@@ -135,7 +139,7 @@ const AssessmentSessionManager: React.FC<AssessmentSessionManagerProps> = ({ onS
         ) : (
           <div className="space-y-6">
             <h2 className="text-2xl font-semibold text-gray-700">Create Assessment Session</h2>
-            
+
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -212,7 +216,7 @@ const AssessmentSessionManager: React.FC<AssessmentSessionManagerProps> = ({ onS
 
             <div className="space-y-4">
               <h3 className="text-lg font-medium text-gray-700">Session Settings</h3>
-              
+
               <div className="space-y-3">
                 <label className="flex items-center space-x-3">
                   <input
@@ -277,7 +281,7 @@ const AssessmentSessionManager: React.FC<AssessmentSessionManagerProps> = ({ onS
         {showShareOptions && currentInvite && (
           <div className="mt-8 p-6 bg-gray-50 rounded-lg">
             <h2 className="text-xl font-semibold text-gray-700 mb-4">Share Your Assessment</h2>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -350,7 +354,7 @@ const AssessmentSessionManager: React.FC<AssessmentSessionManagerProps> = ({ onS
         {sessionConfig.id && !showShareOptions && (
           <div className="mt-8 p-6 bg-blue-50 rounded-lg">
             <h2 className="text-xl font-semibold text-gray-700 mb-4">Session Actions</h2>
-            
+
             <div className="grid md:grid-cols-3 gap-4">
               <button
                 onClick={handleGenerateInvite}
