@@ -425,6 +425,190 @@ export const COMPREHENSIVE_EMOTION_VOCABULARY: EmotionDefinition[] = [
   },
 ];
 
+// Tertiary Emotions (Complex combinations from Plutchik's Wheel)
+export const TERTIARY_EMOTIONS: EmotionDefinition[] = [
+  // Joy + Trust + Anticipation combinations
+  {
+    name: 'bliss',
+    category: 'joy',
+    definition: 'Perfect happiness and great joy',
+    intensity: 'high',
+    synonyms: ['ecstasy', 'euphoria', 'rapture'],
+    relatedEmotions: ['joy', 'love', 'optimism'],
+    evolutionaryFunction: 'Reinforces positive social bonds and reproduction',
+    commonTriggers: ['deep love', 'spiritual experiences', 'major achievements'],
+  },
+  {
+    name: 'serenity',
+    category: 'trust',
+    definition: 'A state of being calm, peaceful, and untroubled',
+    intensity: 'medium',
+    synonyms: ['tranquility', 'peace', 'calmness'],
+    relatedEmotions: ['trust', 'acceptance', 'contentment'],
+    evolutionaryFunction: 'Promotes social harmony and reduces conflict',
+    commonTriggers: ['safe environment', 'trusted relationships', 'meditation'],
+  },
+  {
+    name: 'anticipation',
+    category: 'anticipation',
+    definition: 'The action of anticipating something; expectation or prediction',
+    intensity: 'medium',
+    synonyms: ['expectation', 'prediction', 'forethought'],
+    relatedEmotions: ['curiosity', 'interest', 'hope'],
+    evolutionaryFunction: 'Prepares for future events and opportunities',
+    commonTriggers: ['upcoming events', 'planning', 'learning'],
+  },
+
+  // Fear + Surprise + Sadness combinations
+  {
+    name: 'dread',
+    category: 'fear',
+    definition: 'Great fear or apprehension',
+    intensity: 'high',
+    synonyms: ['terror', 'horror', 'fright'],
+    relatedEmotions: ['fear', 'anxiety', 'worry'],
+    evolutionaryFunction: 'Prepares for severe threats and danger',
+    commonTriggers: ['impending danger', 'severe threats', 'trauma'],
+  },
+  {
+    name: 'bewilderment',
+    category: 'surprise',
+    definition: 'A feeling of being perplexed and confused',
+    intensity: 'medium',
+    synonyms: ['confusion', 'perplexity', 'puzzlement'],
+    relatedEmotions: ['surprise', 'confusion', 'uncertainty'],
+    evolutionaryFunction: 'Signals need for information and learning',
+    commonTriggers: ['complex situations', 'unexpected events', 'learning challenges'],
+  },
+  {
+    name: 'melancholy',
+    category: 'sadness',
+    definition: 'A feeling of pensive sadness, typically with no obvious cause',
+    intensity: 'medium',
+    synonyms: ['sadness', 'sorrow', 'gloom'],
+    relatedEmotions: ['sadness', 'loneliness', 'reflection'],
+    evolutionaryFunction: 'Promotes introspection and social connection',
+    commonTriggers: ['reflection', 'artistic expression', 'quiet moments'],
+  },
+
+  // Disgust + Anger + Anticipation combinations
+  {
+    name: 'contempt',
+    category: 'disgust',
+    definition: 'The feeling that a person or a thing is beneath consideration, worthless, or deserving scorn',
+    intensity: 'medium',
+    synonyms: ['scorn', 'disdain', 'derision'],
+    relatedEmotions: ['disgust', 'anger', 'pride'],
+    evolutionaryFunction: 'Establishes social hierarchy and boundaries',
+    commonTriggers: ['moral violations', 'social transgressions', 'inferior behavior'],
+  },
+  {
+    name: 'rage',
+    category: 'anger',
+    definition: 'Violent, uncontrollable anger',
+    intensity: 'high',
+    synonyms: ['fury', 'wrath', 'frenzy'],
+    relatedEmotions: ['anger', 'fury', 'hostility'],
+    evolutionaryFunction: 'Maximum threat response and obstacle removal',
+    commonTriggers: ['severe threats', 'major obstacles', 'extreme injustice'],
+  },
+  {
+    name: 'aggression',
+    category: 'anger',
+    definition: 'Hostile or violent behavior or attitudes toward another',
+    intensity: 'high',
+    synonyms: ['hostility', 'belligerence', 'combativeness'],
+    relatedEmotions: ['anger', 'rage', 'hostility'],
+    evolutionaryFunction: 'Removes obstacles and establishes dominance',
+    commonTriggers: ['threats', 'competition', 'frustration'],
+  },
+
+  // Complex combinations (3+ primary emotions)
+  {
+    name: 'ecstasy',
+    category: 'joy',
+    definition: 'An overwhelming feeling of great happiness or joyful excitement',
+    intensity: 'high',
+    synonyms: ['bliss', 'euphoria', 'rapture'],
+    relatedEmotions: ['joy', 'love', 'surprise'],
+    evolutionaryFunction: 'Reinforces highly positive experiences and bonds',
+    commonTriggers: ['spiritual experiences', 'deep love', 'major achievements'],
+  },
+  {
+    name: 'despair',
+    category: 'sadness',
+    definition: 'The complete loss or absence of hope',
+    intensity: 'high',
+    synonyms: ['hopelessness', 'desperation', 'anguish'],
+    relatedEmotions: ['sadness', 'fear', 'grief'],
+    evolutionaryFunction: 'Signals need for social support and intervention',
+    commonTriggers: ['major losses', 'chronic stress', 'depression'],
+  },
+  {
+    name: 'terror',
+    category: 'fear',
+    definition: 'Extreme fear that causes panic',
+    intensity: 'high',
+    synonyms: ['horror', 'panic', 'dread'],
+    relatedEmotions: ['fear', 'surprise', 'anxiety'],
+    evolutionaryFunction: 'Triggers immediate survival responses',
+    commonTriggers: ['life-threatening situations', 'trauma', 'extreme danger'],
+  },
+  {
+    name: 'wonder',
+    category: 'surprise',
+    definition: 'A feeling of surprise mingled with admiration, caused by something beautiful, unexpected, unfamiliar, or inexplicable',
+    intensity: 'medium',
+    synonyms: ['amazement', 'astonishment', 'awe'],
+    relatedEmotions: ['surprise', 'curiosity', 'joy'],
+    evolutionaryFunction: 'Encourages exploration and learning',
+    commonTriggers: ['beautiful sights', 'mysterious phenomena', 'learning'],
+  },
+  {
+    name: 'loathing',
+    category: 'disgust',
+    definition: 'A feeling of intense dislike or disgust; abhorrence',
+    intensity: 'high',
+    synonyms: ['abhorrence', 'detestation', 'revulsion'],
+    relatedEmotions: ['disgust', 'hate', 'contempt'],
+    evolutionaryFunction: 'Maximum avoidance of harmful stimuli',
+    commonTriggers: ['extreme moral violations', 'severe threats', 'trauma'],
+  },
+  {
+    name: 'fury',
+    category: 'anger',
+    definition: 'Wild or violent anger',
+    intensity: 'high',
+    synonyms: ['rage', 'wrath', 'frenzy'],
+    relatedEmotions: ['anger', 'rage', 'aggression'],
+    evolutionaryFunction: 'Maximum threat response and obstacle removal',
+    commonTriggers: ['severe threats', 'major obstacles', 'extreme injustice'],
+  },
+  {
+    name: 'vigilance',
+    category: 'anticipation',
+    definition: 'The action or state of keeping careful watch for possible danger or difficulties',
+    intensity: 'medium',
+    synonyms: ['alertness', 'watchfulness', 'attentiveness'],
+    relatedEmotions: ['anticipation', 'fear', 'curiosity'],
+    evolutionaryFunction: 'Prepares for potential threats and opportunities',
+    commonTriggers: ['dangerous situations', 'important tasks', 'competition'],
+  },
+  {
+    name: 'adoration',
+    category: 'trust',
+    definition: 'Deep love and respect',
+    intensity: 'high',
+    synonyms: ['worship', 'reverence', 'devotion'],
+    relatedEmotions: ['trust', 'love', 'admiration'],
+    evolutionaryFunction: 'Strengthens social bonds and group cohesion',
+    commonTriggers: ['spiritual experiences', 'deep relationships', 'inspiration'],
+  },
+];
+
+// Append tertiary emotions to the existing comprehensive vocabulary
+COMPREHENSIVE_EMOTION_VOCABULARY.push(...TERTIARY_EMOTIONS);
+
 // Additional Contemporary Emotions
 export const CONTEMPORARY_EMOTIONS: EmotionDefinition[] = [
   {
@@ -469,11 +653,51 @@ export const CONTEMPORARY_EMOTIONS: EmotionDefinition[] = [
   },
 ];
 
-// Quick Test Emotions (subset for rapid assessment)
+// Quick Test Emotions (Primary + Secondary from Plutchik's Wheel)
 export const QUICK_TEST_EMOTIONS = {
   primary: ['joy', 'trust', 'fear', 'surprise', 'sadness', 'disgust', 'anger', 'anticipation'],
-  secondary: ['contentment', 'love', 'anxiety', 'wonder', 'loneliness', 'contempt', 'frustration', 'hope'],
-  tertiary: ['gratitude', 'compassion', 'worry', 'curiosity', 'grief', 'aversion', 'irritation', 'optimism'],
+  secondary: [
+    // Joy + Trust combinations
+    'love', 'optimism',
+    // Joy + Anticipation combinations
+    'hope', 'excitement',
+    // Trust + Anticipation combinations
+    'faith', 'confidence',
+    // Trust + Joy combinations
+    'admiration', 'gratitude',
+    // Anticipation + Joy combinations
+    'enthusiasm', 'eagerness',
+    // Anticipation + Trust combinations
+    'curiosity', 'interest',
+    // Fear + Surprise combinations
+    'awe', 'amazement',
+    // Fear + Sadness combinations
+    'despair', 'grief',
+    // Surprise + Sadness combinations
+    'disappointment', 'shock',
+    // Surprise + Disgust combinations
+    'contempt', 'aversion',
+    // Sadness + Disgust combinations
+    'remorse', 'guilt',
+    // Disgust + Anger combinations
+    'hate', 'rage',
+    // Anger + Anticipation combinations
+    'aggression', 'hostility',
+    // Anger + Joy combinations
+    'pride', 'triumph',
+    // Joy + Surprise combinations
+    'delight', 'wonder',
+    // Trust + Surprise combinations
+    'acceptance', 'openness',
+    // Fear + Anticipation combinations
+    'anxiety', 'worry',
+    // Sadness + Fear combinations
+    'loneliness', 'isolation',
+    // Disgust + Fear combinations
+    'horror', 'terror',
+    // Anger + Fear combinations
+    'fury', 'wrath',
+  ],
 };
 
 // Get all emotions for comprehensive assessment

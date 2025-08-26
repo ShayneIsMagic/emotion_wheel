@@ -12,7 +12,7 @@ import { ShareOptions, AssessmentInvite, AssessmentSessionConfig } from '../type
 import { toast } from 'react-hot-toast';
 
 interface AssessmentSessionManagerProps {
-  onSessionCreated: (config: AssessmentSessionConfig) => void;
+  onSessionCreated: (_config: AssessmentSessionConfig) => void;
 }
 
 const AssessmentSessionManager: React.FC<AssessmentSessionManagerProps> = ({ onSessionCreated }) => {
@@ -31,11 +31,6 @@ const AssessmentSessionManager: React.FC<AssessmentSessionManagerProps> = ({ onS
     maxParticipants: 100,
     expiresInDays: 30,
   });
-
-  const handleSessionCreated = (_config: AssessmentSessionConfig) => {
-    // Session creation logic would go here
-    toast.success('Assessment session created successfully!');
-  };
 
   const handleCreateSession = () => {
     if (!sessionConfig.title || !sessionConfig.description) {
@@ -64,7 +59,7 @@ const AssessmentSessionManager: React.FC<AssessmentSessionManagerProps> = ({ onS
     setShowCreateForm(false);
   };
 
-  const [_shareOptions, _setShareOptions] = useState<ShareOptions>({
+  const [_shareOptions] = useState<ShareOptions>({
     method: 'url',
     expiresInDays: 30,
     maxParticipants: 100,

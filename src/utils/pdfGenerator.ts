@@ -484,15 +484,6 @@ export class PDFGenerator {
   }
 
   /**
-   * Add text with automatic page break checking
-   */
-  private addTextWithPageBreak(text: string, x: number, y: number, options?: any): void {
-    this.checkPageBreak(10);
-    this.doc.text(text, x, y, options);
-    this.currentY = y + 10;
-  }
-
-  /**
    * Add section with proper spacing and page break checking
    */
   private addSectionWithSpacing(title: string, content: () => void): void {

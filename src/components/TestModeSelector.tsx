@@ -12,13 +12,13 @@ const TestModeSelector: React.FC<TestModeSelectorProps> = ({ onTestModeSelected 
       type: 'quick',
       description: 'Rapid assessment focusing on core emotions',
       estimatedTime: '5-8 minutes',
-      emotions: ['8 primary emotions', '6 secondary emotions', '6 tertiary emotions'],
+      emotions: ['8 primary emotions', '24 secondary emotions', '32 total emotions'],
     },
     {
       type: 'comprehensive',
       description: 'Full emotional assessment with all emotion categories',
       estimatedTime: '15-20 minutes',
-      emotions: ['All Plutchik emotions', 'Geneva Emotion Wheel', 'PANAS scales', 'Dimensional assessment', 'Additional emotions'],
+      emotions: ['8 primary emotions', '24 secondary emotions', '88+ tertiary emotions', '120+ total emotions', 'Geneva Emotion Wheel', 'PANAS scales', 'Dimensional assessment'],
     },
   ];
 

@@ -30,7 +30,7 @@ export class EmailService {
       const emailData = this.prepareEmailData(participant, results, template, pdfBlob);
 
       // Simulate email sending
-      console.log('Sending email:', emailData);
+      // Email data prepared for sending
 
       // For demo purposes, we'll simulate a successful email send
       await this.simulateEmailSend(emailData);
@@ -118,10 +118,10 @@ export class EmailService {
   /**
    * Simulate email sending (replace with real email service)
    */
-  private static async simulateEmailSend(emailData: any): Promise<void> {
+  private static async simulateEmailSend(_emailData: any): Promise<void> {
     return new Promise((resolve) => {
       setTimeout(() => {
-        console.log('Email sent successfully to:', emailData.to);
+        // Email sent successfully
         resolve();
       }, 1000);
     });

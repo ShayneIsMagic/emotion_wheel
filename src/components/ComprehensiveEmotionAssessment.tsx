@@ -39,15 +39,15 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
   const [assessmentHistory, setAssessmentHistory] = useState<AssessmentSession[]>([]);
   const [showResults, setShowResults] = useState(false);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-  const [_currentSession, _setCurrentSession] = useState<AssessmentSession | null>(null);
+  const [_currentSession] = useState<AssessmentSession | null>(null);
 
   // Multi-user functionality
   const [isSessionManager, setIsSessionManager] = useState(false);
   const [sessionConfig, setSessionConfig] = useState<AssessmentSessionConfig | null>(null);
   const [currentParticipant, setCurrentParticipant] = useState<Participant | null>(null);
   const [showParticipantEntry, setShowParticipantEntry] = useState(false);
-  const [_activeInvites, _setActiveInvites] = useState<AssessmentInvite[]>([]);
-  const [_participants, _setParticipants] = useState<Participant[]>([]);
+  const [activeInvites, setActiveInvites] = useState<AssessmentInvite[]>([]);
+  const [participants, setParticipants] = useState<Participant[]>([]);
 
   // Test mode functionality
   const [selectedTestMode, setSelectedTestMode] = useState<TestMode | null>(null);
@@ -135,7 +135,7 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
   const calculateResults = () => {
     const scores = AssessmentEngine.calculateScores(responses, timeframe);
     const insights = AssessmentEngine.generateInsights(scores, responses);
-    const recommendations = AssessmentEngine.generateRecommendations(scores, insights);
+    const recommendations = AssessmentEngine.generateRecommendations(scores, insights, {}, timeframe);
 
     return { scores, insights, recommendations };
   };
@@ -230,8 +230,8 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
       lastActivity: new Date(),
     };
     setCurrentParticipant(participant);
-    _setParticipants(prev => [...prev, participant]);
-    _setActiveInvites(prev => [...prev, invite]);
+    setParticipants(prev => [...prev, participant]);
+    setActiveInvites(prev => [...prev, invite]);
     toast.success('Assessment session created successfully!');
   };
 
@@ -247,7 +247,7 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
     };
 
     setCurrentParticipant(participant);
-    _setParticipants(prev => [...prev, participant]);
+    setParticipants(prev => [...prev, participant]);
     setShowParticipantEntry(false);
 
     // Set the timeframe from session config
@@ -267,7 +267,7 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
       assessmentData: _currentSession,
     };
 
-    _setParticipants(prev =>
+    setParticipants(prev =>
       prev.map(p => p.id === currentParticipant.id ? updatedParticipant : p),
     );
 
@@ -297,11 +297,10 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
       const allEmotions = getAllEmotions();
       setComprehensiveEmotions(allEmotions);
     } else {
-      // Set up quick test emotions
+      // Set up quick test emotions (primary + secondary only)
       const quickEmotions = [
         ...QUICK_TEST_EMOTIONS.primary,
         ...QUICK_TEST_EMOTIONS.secondary,
-        ...QUICK_TEST_EMOTIONS.tertiary,
       ];
       setComprehensiveEmotions(quickEmotions);
     }
@@ -631,10 +630,7 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
     const { scores, insights, recommendations } = calculateResults();
 
     // Debug logging
-    console.log('Assessment Responses:', responses);
-    console.log('Plutchik Scores:', scores.plutchik);
-    console.log('GEW Scores:', scores.gew);
-    console.log('PANAS Scores:', scores.panas);
+    // Assessment data logged for debugging
 
     const radarData = [
       { dimension: 'Positive High-Arousal', score: scores.gew.positiveHighArousal, fullMark: 20 },

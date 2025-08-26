@@ -59,7 +59,7 @@ export class URLGenerator {
 
       return null;
     } catch (error) {
-      console.error('Error parsing assessment URL:', error);
+      // Error parsing assessment URL
       return null;
     }
   }
