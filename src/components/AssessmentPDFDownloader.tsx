@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Download, FileText, Brain, Calculator, UserCheck, Loader2 } from 'lucide-react';
+import { Download, Brain, Calculator, UserCheck, Loader2 } from 'lucide-react';
 import { MarkdownToPDFConverter } from '../utils/markdownToPDFConverter';
 
 const AssessmentPDFDownloader: React.FC = () => {
@@ -36,6 +36,8 @@ const AssessmentPDFDownloader: React.FC = () => {
 
       pdf.save(filename);
     } catch (error) {
+      // Log error for debugging (in production, this would go to error tracking service)
+      // eslint-disable-next-line no-console
       console.error(`Error generating ${type} PDF:`, error);
       alert('Error generating PDF. Please try again.');
     } finally {

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { AlertTriangle, BarChart3, Download, Shield, Activity } from 'lucide-react';
+import AssessmentReport from './AssessmentReport';
 
 interface ClinicalResult {
   emotionFamilies: { [key: string]: { [key: string]: number } };
@@ -19,7 +20,7 @@ const ClinicalEmotionalAssessment: React.FC = () => {
   const [isComplete, setIsComplete] = useState(false);
   const [isLicensedProfessional, setIsLicensedProfessional] = useState(false);
   const [clientName, setClientName] = useState('');
-
+  const [showReport, setShowReport] = useState(false);
 
   const totalSteps = 3;
 
@@ -581,7 +582,15 @@ const ClinicalEmotionalAssessment: React.FC = () => {
           </ul>
         </div>
 
-        <div className="text-center">
+        <div className="text-center space-y-4">
+          <button
+            onClick={() => setShowReport(true)}
+            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center gap-2 mx-auto"
+          >
+            <Download className="w-5 h-5" />
+            View Full Report
+          </button>
+
           <button
             onClick={() => window.print()}
             className="bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center gap-2 mx-auto"
@@ -593,6 +602,20 @@ const ClinicalEmotionalAssessment: React.FC = () => {
       </div>
     );
   };
+
+  // Render the full AssessmentReport if showReport is true
+  if (showReport && results) {
+    return (
+      <AssessmentReport
+        title="Clinical Emotional Assessment"
+        subtitle="Professional Clinical Report"
+        clientName={clientName}
+        assessmentDate={new Date().toLocaleDateString()}
+        results={results}
+        type="clinical"
+      />
+    );
+  }
 
   if (isComplete) {
     return renderResults();

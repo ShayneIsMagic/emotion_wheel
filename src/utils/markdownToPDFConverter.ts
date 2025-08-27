@@ -48,6 +48,8 @@ export class MarkdownToPDFConverter {
       this.addFooter();
       return this.doc;
     } catch (error) {
+      // Log error for debugging (in production, this would go to error tracking service)
+      // eslint-disable-next-line no-console
       console.error('Error generating integrated personality PDF:', error);
       // Fallback to embedded content if file reading fails
       return this.generateIntegratedPersonalityPDFFallback();
@@ -83,6 +85,8 @@ export class MarkdownToPDFConverter {
       this.addFooter();
       return this.doc;
     } catch (error) {
+      // Log error for debugging (in production, this would go to error tracking service)
+      // eslint-disable-next-line no-console
       console.error('Error generating clinical emotional PDF:', error);
       // Fallback to embedded content if file reading fails
       return this.generateClinicalEmotionalPDFFallback();
@@ -118,6 +122,8 @@ export class MarkdownToPDFConverter {
       this.addFooter();
       return this.doc;
     } catch (error) {
+      // Log error for debugging (in production, this would go to error tracking file
+      // eslint-disable-next-line no-console
       console.error('Error generating unfiltered scoring PDF:', error);
       // Fallback to embedded content if file reading fails
       return this.generateUnfilteredScoringPDFFallback();

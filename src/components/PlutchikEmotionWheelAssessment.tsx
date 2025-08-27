@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heart, Brain, Target, TrendingUp, Download, PieChart, Activity, FileText } from 'lucide-react';
+import { Brain, Target, TrendingUp, Download, Activity, FileText } from 'lucide-react';
 import EmotionalIntelligenceReport from './EmotionalIntelligenceReport';
 
 interface EmotionWheelResult {

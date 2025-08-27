@@ -37,6 +37,8 @@ export class EmailService {
 
       return true;
     } catch (error) {
+      // Log error for debugging (in production, this would go to error tracking service)
+      // eslint-disable-next-line no-console
       console.error('Error sending email:', error);
       return false;
     }

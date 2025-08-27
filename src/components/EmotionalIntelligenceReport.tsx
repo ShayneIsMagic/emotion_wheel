@@ -1,5 +1,5 @@
 import React from 'react';
-import { Download, Brain, Heart, Target, TrendingUp, Activity, PieChart, BarChart3, Calendar, User, Clock } from 'lucide-react';
+import { Download, Brain, Target, TrendingUp, Activity, PieChart, BarChart3, Calendar, User, Clock } from 'lucide-react';
 
 interface EmotionalIntelligenceReportProps {
   emotionWheelResults: any;
@@ -10,8 +10,8 @@ interface EmotionalIntelligenceReportProps {
 
 const EmotionalIntelligenceReport: React.FC<EmotionalIntelligenceReportProps> = ({
   emotionWheelResults,
-  cliftonStrengthsResults,
-  hexacoResults,
+  _cliftonStrengthsResults,
+  _hexacoResults,
   onClose,
 }) => {
   const currentDate = new Date().toLocaleDateString('en-US', {

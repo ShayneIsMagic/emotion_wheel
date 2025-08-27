@@ -53,6 +53,8 @@ const AssessmentReport: React.FC<AssessmentReportProps> = ({
 
       pdf.save(`${title.replace(/\s+/g, '_')}_${clientName.replace(/\s+/g, '_')}_${assessmentDate}.pdf`);
     } catch (error) {
+      // Log error for debugging (in production, this would go to error tracking service)
+      // eslint-disable-next-line no-console
       console.error('Error generating PDF:', error);
       alert('Error generating PDF. Please try again.');
     }

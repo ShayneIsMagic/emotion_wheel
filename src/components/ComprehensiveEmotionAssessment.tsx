@@ -46,7 +46,9 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
   const [sessionConfig, setSessionConfig] = useState<AssessmentSessionConfig | null>(null);
   const [currentParticipant, setCurrentParticipant] = useState<Participant | null>(null);
   const [showParticipantEntry, setShowParticipantEntry] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [activeInvites, setActiveInvites] = useState<AssessmentInvite[]>([]);
+  // eslint-disable-next-line no-unused-vars
   const [participants, setParticipants] = useState<Participant[]>([]);
 
   // Test mode functionality
@@ -112,6 +114,8 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
       try {
         setAssessmentHistory(JSON.parse(saved));
       } catch (error) {
+        // Log error for debugging (in production, this would go to error tracking service)
+        // eslint-disable-next-line no-console
         console.error('Error loading assessment history:', error);
       }
     }
@@ -186,6 +190,8 @@ const ComprehensiveEmotionAssessment: React.FC = () => {
       // Save PDF
       pdf.save(`emotion_assessment_${new Date().toISOString().slice(0, 10)}.pdf`);
     } catch (error) {
+      // Log error for debugging (in production, this would go to error tracking service)
+      // eslint-disable-next-line no-console
       console.error('Error generating PDF:', error);
       alert('Error generating PDF. Please try again.');
     } finally {

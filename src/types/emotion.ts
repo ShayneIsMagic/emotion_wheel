@@ -75,6 +75,7 @@ export interface AssessmentScores {
     power: number; // 1-9
   };
   plutchik: {
+    // eslint-disable-next-line no-unused-vars
     [key in EmotionCategory]: number;
   };
 }
