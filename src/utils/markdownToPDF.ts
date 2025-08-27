@@ -84,10 +84,12 @@ export class MarkdownToPDFConverter {
   private cleanMarkdownLine(line: string): string {
     return line
       .replace(/^\*\s*/, '• ') // Convert * to bullet points
+      // eslint-disable-next-line no-useless-escape
       .replace(/^\-\s*/, '• ') // Convert - to bullet points
       .replace(/`([^`]+)`/g, '$1') // Remove code formatting
       .replace(/\*\*([^*]+)\*\*/g, '$1') // Remove bold formatting
       .replace(/\*([^*]+)\*/g, '$1') // Remove italic formatting
+      // eslint-disable-next-line no-useless-escape
       .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Convert links to text
       .replace(/^\|(.+)\|$/, '$1') // Handle table rows
       .trim();
